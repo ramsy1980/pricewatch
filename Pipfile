@@ -8,6 +8,8 @@ pymongo = {extras = ["srv"], version = "*"}
 gunicorn = "*"
 python-dotenv = "*"
 Flask = "*"
+beautifulsoup4 = "*"
+requests = "*"
 
 [dev-packages]
 pylint = "*"
