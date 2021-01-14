@@ -1,7 +1,7 @@
 import re
 import requests
 from bs4 import BeautifulSoup
-from typing import Dict
+from typing import Dict, List
 from uuid import uuid4
 from common.database import database
 
@@ -46,7 +46,7 @@ class Item:
         }
 
     @classmethod
-    def all(cls):
+    def all(cls) -> List:
         return [cls(**item) for item in database.find("items", {})]
 
 
