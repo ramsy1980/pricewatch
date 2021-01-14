@@ -8,4 +8,7 @@ QUERY = {"class": "sales-price__current"}
 item = Item(url=URL, tag_name=TAG_NAME, query=QUERY)
 item.save_to_db()
 
-print(item.load_price())
+items_loaded = Item.all()
+
+print(items_loaded)
+print(items_loaded[0].load_price())

@@ -45,5 +45,10 @@ class Item:
             "query": self.query
         }
 
+    @classmethod
+    def all(cls):
+        return [cls(**item) for item in database.find("items", {})]
+
+
     def save_to_db(self):
         database.insert(self.collection, self.json())

@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from pymongo import MongoClient
+from pymongo import MongoClient, CursorType
 from typing import Dict
 
 class Database:
@@ -11,5 +11,8 @@ class Database:
     
     def insert(self, collection: str, data: Dict):
         self.db[collection].insert(data)
+    
+    def find(self, collection: str, query: Dict) -> CursorType :
+        return self.db[collection].find(query)
 
 database = Database(os.environ.get("MONGODB_URI"))
