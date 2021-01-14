@@ -5,8 +5,8 @@ from typing import Dict, List
 from uuid import uuid4
 from common.database import database
 
-class Item:
 
+class Item:
     def __init__(self, url: str, tag_name: str, query: Dict, _id: str = None):
         self.url = url
         self.tag_name = tag_name
@@ -14,7 +14,7 @@ class Item:
         self.price = None
 
         self.collection = "items"
-        self._id = _id or uuid4().hex # ensures we have easy to use string
+        self._id = _id or uuid4().hex  # ensures we have easy to use string
 
     def __repr__(self) -> str:
         return f"<Item url={self.url} query={self.query} price={self.price}>"
@@ -31,12 +31,13 @@ class Item:
         match = pattern.search(string_price)
         found_price = match.group(1)
 
-        without_dots = found_price.replace(".","")
-        if without_dots.endswith(","): without_dots = without_dots.replace(",","")
+        without_dots = found_price.replace(".", "")
+        if without_dots.endswith(","):
+            without_dots = without_dots.replace(",", "")
 
         self.price = float(without_dots)
         return self.price
-    
+
     def json(self) -> Dict:
         return {
             "_id": self._id,
@@ -51,3 +52,8 @@ class Item:
     @classmethod
     def all(cls) -> List:
         return [cls(**item) for item in database.find("items", {})]
+
+    @classmethod
+    def get_by_id(cls, _id) -> "Item":
+        item_json = database.find_one("items", {"_id": _id})
+        return cls(**item_json)
