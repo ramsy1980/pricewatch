@@ -15,4 +15,7 @@ class Database:
     def find(self, collection: str, query: Dict) -> CursorType :
         return self.db[collection].find(query)
 
+    def find_one(self, collection: str, query: Dict) -> Dict:
+        return self.db[collection].find_one(query)
+
 database = Database(os.environ.get("MONGODB_URI"))
