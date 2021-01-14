@@ -5,7 +5,6 @@ from typing import Dict, List
 from uuid import uuid4
 from common.database import database
 
-
 class Item:
     def __init__(self, url: str, tag_name: str, query: Dict, _id: str = None):
         self.url = url
