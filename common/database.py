@@ -18,4 +18,10 @@ class Database:
     def find_one(self, collection: str, query: Dict) -> Dict:
         return self.db[collection].find_one(query)
 
+    def update(self, collection: str, query: Dict,  data: Dict) -> None:
+        return self.db[collection].update(query, data, upsert=True)
+
+    def remove(self, collection: str, query: Dict) -> Dict:
+        return self.db[collection].remove(query)
+
 database = Database(os.environ.get("MONGODB_URI"))
