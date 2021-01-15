@@ -4,7 +4,8 @@ from uuid import uuid4
 from common.database import database
 
 class Model(metaclass=ABCMeta):
-    collection: str = None
+    collection: str
+    _id: str
 
     def __init__(self, *args, **kwargs):
         _id = kwargs
