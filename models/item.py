@@ -2,15 +2,13 @@ import re
 import requests
 from bs4 import BeautifulSoup
 from typing import Dict, List
-from uuid import uuid4
-from common.database import database
 from models.model import Model
 
 class Item(Model):
     collection = "items"
 
     def __init__(self, url: str, tag_name: str, query: Dict, _id: str = None):
-        super().__init__()
+        super().__init__(_id)
         self.url = url
         self.tag_name = tag_name
         self.query = query

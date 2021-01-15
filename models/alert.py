@@ -1,14 +1,12 @@
 from typing import Dict, List
 from models.item import Item
 from models.model import Model
-from uuid import uuid4
-from common.database import database
 
 class Alert(Model):
     collection = "alerts"
 
     def __init__(self, item_id: str, price_limit: float, _id: str = None):
-        super().__init__()
+        super().__init__(_id)
         self.item_id = item_id
         self.item = Item.get_by_id(item_id)
         self.price_limit = price_limit
