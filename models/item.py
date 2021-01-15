@@ -4,16 +4,17 @@ from bs4 import BeautifulSoup
 from typing import Dict, List
 from uuid import uuid4
 from common.database import database
+from models.model import Model
 
-class Item:
+class Item(Model):
+    collection = "items"
+
     def __init__(self, url: str, tag_name: str, query: Dict, _id: str = None):
+        super().__init__()
         self.url = url
         self.tag_name = tag_name
         self.query = query
         self.price = None
-
-        self.collection = "items"
-        self._id = _id or uuid4().hex  # ensures we have easy to use string
 
     def __repr__(self) -> str:
         return f"<Item url={self.url} query={self.query} price={self.price}>"
@@ -44,15 +45,3 @@ class Item:
             "tag_name": self.tag_name,
             "query": self.query
         }
-
-    def save_to_db(self):
-        database.insert(self.collection, self.json())
-
-    @classmethod
-    def all(cls) -> List:
-        return [cls(**item) for item in database.find("items", {})]
-
-    @classmethod
-    def get_by_id(cls, _id) -> "Item":
-        item_json = database.find_one("items", {"_id": _id})
-        return cls(**item_json)
