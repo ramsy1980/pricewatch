@@ -1,8 +1,9 @@
 import re
 import requests
 from bs4 import BeautifulSoup
-from typing import Dict, List
+from typing import Dict
 from models.model import Model
+
 
 class Item(Model):
     collection = "items"
