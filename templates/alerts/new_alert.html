@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <header>
+        <h1>Create Alert</h1>
+    </header>
+    <section class="create-alert-form">
+        <form method="post">
+            <div class="form-group mb-3">
+                <label for="item_id" class="form-label">Item ID</label>
+                <input type="text" class="form-control" id="item_id" name="item_id" placeholder ="item_id"/>
+            </div>
+            <div class="form-group mb-3">
+                <label for="price_limit" class="form-label">Price limit</label>
+                <input type="text" class="form-control" id="price_limit" name="price_limit" placeholder ="eg. 1000" aria-describedby="priceLimitHelp"/>
+                <small id="priceLimitHelp" class="form-text text-muted">
+                    Under which price for the item would you like to get notified?
+                </small>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+    </section>
+{% endblock %}
