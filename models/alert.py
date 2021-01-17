@@ -1,16 +1,20 @@
+from uuid import uuid4
+from dataclasses import dataclass, field
 from typing import Dict
 from models.item import Item
 from models.model import Model
 
 
+@dataclass(eq=False)
 class Alert(Model):
-    collection = "alerts"
 
-    def __init__(self, item_id: str, price_limit: float, _id: str = None):
-        super().__init__(_id)
-        self.item_id = item_id
-        self.item = Item.get_by_id(item_id)
-        self.price_limit = price_limit
+    collection: str = field(init=False, default='alerts')
+    item_id: str
+    price_limit: float
+    _id: str = field(default_factory=lambda: uuid4().hex)
+
+    def __post_init__(self):
+        self.item = Item.get_by_id(self.item_id)
 
     def json(self) -> Dict:
         return {

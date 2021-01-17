@@ -1,4 +1,6 @@
 import requests
+from dataclasses import dataclass, field
+from uuid import uuid4
 from re import sub
 from decimal import Decimal
 from bs4 import BeautifulSoup
@@ -6,14 +8,16 @@ from typing import Dict
 from models.model import Model
 
 
+@dataclass(eq=False)
 class Item(Model):
-    collection = "items"
+    collection: str = field(init=False, default="items")
+    url: str
+    tag_name: str
+    query: Dict
+    price: float
+    _id: str = field(default_factory=lambda: uuid4().hex)
 
-    def __init__(self, url: str, tag_name: str, query: Dict, _id: str = None):
-        super().__init__(_id)
-        self.url = url
-        self.tag_name = tag_name
-        self.query = query
+    def __post_init__(self):
         self.price = None
 
     def __repr__(self) -> str:

@@ -12,8 +12,7 @@ class Model(metaclass=ABCMeta):
     _id: str
 
     def __init__(self, *args, **kwargs):
-        _id = kwargs
-        self._id = _id or uuid4().hex
+        pass
 
     @abstractmethod
     def json(self) -> Dict:
