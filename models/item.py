@@ -1,5 +1,6 @@
-import re
 import requests
+from re import sub
+from decimal import Decimal
 from bs4 import BeautifulSoup
 from typing import Dict
 from models.model import Model
@@ -26,15 +27,8 @@ class Item(Model):
         element = soup.find(self.tag_name, self.query)
         string_price = element.text.strip()
 
-        pattern = re.compile(r"(\d+\.?\d*,?\d*)")
-        match = pattern.search(string_price)
-        found_price = match.group(1)
+        self.price = Decimal(sub(r'[^\d.]', '', string_price))
 
-        without_dots = found_price.replace(".", "")
-        if without_dots.endswith(","):
-            without_dots = without_dots.replace(",", "")
-
-        self.price = float(without_dots)
         return self.price
 
     def json(self) -> Dict:
