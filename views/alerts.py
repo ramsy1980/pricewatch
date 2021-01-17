@@ -23,6 +23,7 @@ def new_alert():
         store = Store.find_by_url(item_url)
         item = Item(item_url, store.tag_name, store.query)
 
+        item.load_price()
         item.save_to_db()
 
         Alert(alert_name, item._id, price_limit).save_to_db()

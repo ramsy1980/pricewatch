@@ -14,10 +14,8 @@ class Item(Model):
     url: str
     tag_name: str
     query: Dict
+    price: float = field(default=None)
     _id: str = field(default_factory=lambda: uuid4().hex)
-
-    def __post_init__(self):
-        self.price = None
 
     def __repr__(self) -> str:
         return f"<Item url={self.url} query={self.query} price={self.price}>"
@@ -30,7 +28,7 @@ class Item(Model):
         element = soup.find(self.tag_name, self.query)
         string_price = element.text.strip()
 
-        self.price = Decimal(sub(r'[^\d.]', '', string_price))
+        self.price = float(Decimal(sub(r'[^\d.]', '', string_price)))
 
         return self.price
 
@@ -39,5 +37,6 @@ class Item(Model):
             "_id": self._id,
             "url": self.url,
             "tag_name": self.tag_name,
-            "query": self.query
+            "query": self.query,
+            "price": self.price
         }
