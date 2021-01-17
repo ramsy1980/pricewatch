@@ -2,23 +2,23 @@
 
 {% block content %}
     <header>
-        <h1>Create Alert</h1>
+        <h1 class="text-5xl lg:text-6xl font-bold text-teal-600 mb-2 lg:mb-6">Create Alert</h1>
     </header>
-    <section class="create-alert-form">
-        <form method="post">
-            <div class="form-group mb-3">
-                <label for="item_id" class="form-label">Item ID</label>
-                <input type="text" class="form-control" id="item_id" name="item_id" placeholder ="item_id"/>
+    <section>
+        <form method="post" class="bg-gray-100 shadow-sm rounded-md p-8">
+            <div class="mb-6">
+                <label for="item_url" class="mb-3 block text-gray-700">Item ID</label>
+                <input type="text" class="bg-white rounded-md border border-gray-200 p-3 focus:outline-none w-full" id="item_url" name="item_url" placeholder ="https://..."/>
             </div>
-            <div class="form-group mb-3">
-                <label for="price_limit" class="form-label">Price limit</label>
-                <input type="text" class="form-control" id="price_limit" name="price_limit" placeholder ="eg. 1000" aria-describedby="priceLimitHelp"/>
+            <div class="mb-6">
+                <label for="price_limit" class="mb-3 block text-gray-700">Price limit</label>
+                <input type="text" class="bg-white rounded-md border border-gray-200 p-3 focus:outline-none w-full" id="price_limit" name="price_limit" placeholder ="100" aria-describedby="priceLimitHelp"/>
                 <small id="priceLimitHelp" class="form-text text-muted">
                     Under which price for the item would you like to get notified?
                 </small>
             </div>
 
-            <button type="submit" class="btn btn-primary">Create</button>
+            <button type="submit" class="py-3 px-12 bg-blue-500 hover:bg-blue-600 mr-5 rounded-md text-white text-lg focus:outline-none w-full">Create</button>
         </form>
     </section>
 {% endblock %}
