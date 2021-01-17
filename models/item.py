@@ -14,7 +14,6 @@ class Item(Model):
     url: str
     tag_name: str
     query: Dict
-    price: float
     _id: str = field(default_factory=lambda: uuid4().hex)
 
     def __post_init__(self):

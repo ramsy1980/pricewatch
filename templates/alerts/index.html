@@ -10,10 +10,9 @@
             <ul class="divide-y divide-gray-300">
             {% for alert in alerts %}
                 <li class="p-4 hover:bg-gray-50 cursor-pointer">
-                    <h4>Alert</h4>
-                    <p>
-                        <a href="{{ alert.item.url }}">{{ alert.item_id }}</a>
-                    </p>
+                    <a class="hover:underline" href="{{ alert.item.url }}">
+                        <h4>{{ alert.name }}</h4>
+                    </a>
                 </li>
             {% endfor %}
             </ul>

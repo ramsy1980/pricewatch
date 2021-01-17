@@ -9,6 +9,7 @@ from models.model import Model
 class Alert(Model):
 
     collection: str = field(init=False, default='alerts')
+    name: str
     item_id: str
     price_limit: float
     _id: str = field(default_factory=lambda: uuid4().hex)
@@ -19,8 +20,9 @@ class Alert(Model):
     def json(self) -> Dict:
         return {
             "_id": self._id,
+            "name": self.name,
             "price_limit": self.price_limit,
-            "item_id": self.item_id
+            "item_id": self.item_id,
         }
 
     def load_item_price(self) -> float:

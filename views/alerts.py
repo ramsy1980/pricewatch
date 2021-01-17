@@ -16,6 +16,7 @@ def index():
 def new_alert():
     if request.method == "POST":
 
+        alert_name = request.form['name']
         item_url = request.form['item_url']
         price_limit = float(request.form['price_limit'])
 
@@ -24,6 +25,6 @@ def new_alert():
 
         item.save_to_db()
 
-        Alert(item._id, price_limit).save_to_db()
+        Alert(alert_name, item._id, price_limit).save_to_db()
 
     return render_template('alerts/new_alert.html')
