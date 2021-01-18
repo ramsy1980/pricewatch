@@ -17,6 +17,9 @@
                     <a class="ml-auto text-gray-500" href="{{ url_for('alerts.edit_alert', alert_id=alert._id) }}">
                         edit
                     </a>
+                    <a class="ml-2 text-red-500" href="{{ url_for('alerts.delete_alert', alert_id=alert._id) }}">
+                        delete
+                    </a>
                 </li>
             {% endfor %}
             </ul>
