@@ -1,5 +1,5 @@
 import json
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, redirect, url_for
 from models.store import Store
 
 store_blueprint = Blueprint('stores', __name__)
@@ -23,5 +23,7 @@ def new_store():
             url_prefix += "/"
 
         Store(name, url_prefix, tag_name, query).save_to_db()
+
+        return redirect(url_for('.index'))
 
     return render_template('stores/new_store.html')
