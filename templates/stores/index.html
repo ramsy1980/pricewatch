@@ -15,6 +15,9 @@
                     </a>
                     <small class="ml-1 text-gray-300">({{ store.url_prefix }})</small>
                     <a class="ml-auto text-gray-500" href="{{ url_for('stores.edit_store', store_id=store._id) }}">edit</a>
+                    <a class="ml-2 text-red-500" href="{{ url_for('stores.delete_store', store_id=store._id) }}">
+                        delete
+                    </a>
                 </li>
             {% endfor %}
             </ul>
