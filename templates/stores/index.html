@@ -13,7 +13,8 @@
                     <a class="hover:underline" href="{{ store.name }}">
                         <h4>{{ store.name }}</h4>
                     </a>
-                    <small class="ml-auto text-gray-200">{{ store.url_prefix }}</small>
+                    <small class="ml-1 text-gray-300">({{ store.url_prefix }})</small>
+                    <a class="ml-auto text-gray-500" href="{{ url_for('stores.edit_store', store_id=store._id) }}">edit</a>
                 </li>
             {% endfor %}
             </ul>

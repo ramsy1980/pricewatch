@@ -1,0 +1,40 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+    <header>
+        <h1 class="text-5xl lg:text-6xl font-bold text-teal-600 mb-2 lg:mb-6">Edit Store</h1>
+    </header>
+    <section>
+        <form method="post" class="bg-gray-100 shadow-sm rounded-md p-8">
+             <div class="mb-6">
+                <label for="name" class="mb-3 block text-gray-700">Name</label>
+                <input type="text" class="bg-white rounded-md border border-gray-200 p-3 focus:outline-none w-full" id="name" name="name" placeholder="{{ store.name }}" value="{{ store.name }}"/>
+            </div>
+            <div class="mb-6">
+                <label for="url_prefix" class="mb-3 block text-gray-700">Url prefix</label>
+                <input type="text" class="bg-white rounded-md border border-gray-200 p-3 focus:outline-none w-full" id="url_prefix" name="url_prefix" placeholder="{{ store.url_prefix }}" value="{{ store.url_prefix }}" aria-describedby="urlPrefixHelp"/>
+                <small id="urlPrefixHelp" class="form-text text-muted">
+                    What URL will all items start with?
+                </small>
+            </div>
+            <div class="mb-6">
+                <label for="tag_name" class="mb-3 block text-gray-700">Tag name</label>
+                <input type="text" class="bg-white rounded-md border border-gray-200 p-3 focus:outline-none w-full" id="tag_name" name="tag_name" placeholder="{{ store.tag_name }}" value="{{ store.tag_name }}" aria-describedby="tagNameHelp"/>
+                <small id="tagNameHelp" class="form-text text-muted">
+                    What HTML tag contains the price information for items in this store?
+                </small>
+            </div>
+            <div class="mb-6">
+                <label for="query" class="mb-3 block text-gray-700">Query</label>
+                <input type="text" class="bg-white rounded-md border border-gray-200 p-3 focus:outline-none w-full" id="query" name="query" placeholder="{{ query }}" value='{{ query }}' aria-describedby="queryHelp"/>
+                <small id="queryHelp" class="form-text text-muted">
+                    What attributes are on the element that contain the price?
+                    This is so we can find it on the page.
+                </small>
+            </div>
+
+            <button type="submit" class="py-3 px-12 bg-blue-500 hover:bg-blue-600 mr-5 rounded-md text-white text-lg focus:outline-none w-full">Update</button>
+        </form>
+    </section>
+{% endblock %}
