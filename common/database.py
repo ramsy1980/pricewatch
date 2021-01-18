@@ -1,7 +1,7 @@
 import os
-from dotenv import load_dotenv
 from pymongo import MongoClient, CursorType
 from typing import Dict
+
 
 class Database:
     def __init__(self, uri: str):
@@ -23,5 +23,6 @@ class Database:
 
     def remove(self, collection: str, query: Dict) -> Dict:
         return self.db[collection].remove(query)
+
 
 database = Database(os.environ.get("MONGODB_URI"))
