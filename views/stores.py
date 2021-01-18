@@ -1,3 +1,4 @@
+import json
 from flask import Blueprint, render_template, request
 from models.store import Store
 
@@ -16,7 +17,10 @@ def new_store():
         name = request.form['name']
         url_prefix = request.form['url_prefix']
         tag_name = request.form['tag_name']
-        query = request.form['query']
+        query = json.loads(request.form['query'])
+
+        if not url_prefix.endswith("/"):
+            url_prefix += "/"
 
         Store(name, url_prefix, tag_name, query).save_to_db()
 
