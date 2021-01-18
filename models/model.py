@@ -19,7 +19,7 @@ class Model(metaclass=ABCMeta):
         raise NotImplementedError
 
     def save_to_db(self):
-        database.insert(self.collection, self.json())
+        database.update(self.collection, {"_id": self._id}, self.json())
 
     def remove_from_db(self):
         database.remove(self.collection, {"_id: {self._id}"})
