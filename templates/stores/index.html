@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<header>
+    <h1 class="text-5xl lg:text-6xl font-bold text-teal-600 mb-2 lg:mb-6">Stores</h1>
+</header>
+<section>
+    <div class="bg-gray-100 shadow-sm rounded-md p-8">
+        <div class="bg-white shadow-xl rounded-lg w-1/2 mb-10">
+            <ul class="divide-y divide-gray-300">
+            {% for store in stores %}
+                <li class="p-4 hover:bg-gray-50 cursor-pointer flex items-center">
+                    <a class="hover:underline" href="{{ store.name }}">
+                        <h4>{{ store.name }}</h4>
+                    </a>
+                    <small class="ml-auto text-gray-200">{{ store.url_prefix }}</small>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+
+        <a class="py-3 px-12 bg-blue-500 hover:bg-blue-600 mr-5 rounded-md text-white text-lg focus:outline-none w-full" href="{{ url_for('stores.new_store') }}">Create new</a>
+    </div>
+</section>
+{% endblock %}
