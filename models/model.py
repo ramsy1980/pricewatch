@@ -1,6 +1,5 @@
 from abc import ABCMeta, abstractmethod
 from typing import Dict, List, TypeVar, Type, Union
-from uuid import uuid4
 from common.database import database
 
 T = TypeVar('T', bound='Model')
@@ -22,7 +21,7 @@ class Model(metaclass=ABCMeta):
         database.update(self.collection, {"_id": self._id}, self.json())
 
     def remove_from_db(self):
-        database.remove(self.collection, {"_id: {self._id}"})
+        database.remove(self.collection, {"_id": self._id})
 
     @classmethod
     def all(cls: Type[T]) -> List[T]:
