@@ -1,13 +1,23 @@
 import os
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from views.alerts import alert_blueprint
 from views.stores import store_blueprint
 from views.users import user_blueprint
 
+APP_SECRET = os.environ.get('APP_SECRET')
+ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL')
+
+if APP_SECRET is None:
+    raise RuntimeError("Failed to load APP_SECRET")
+if ADMIN_EMAIL is None:
+    raise RuntimeError("Failed to load ADMIN_EMAIL")
+
 app = Flask(__name__)
-app.secret_key = os.urandom(64)
+
+app.secret_key = APP_SECRET
+
 app.config.update(
-    ADMIN_EMAIL=os.environ.get('ADMIN_EMAIL')
+    ADMIN_EMAIL=ADMIN_EMAIL,
 )
 
 
