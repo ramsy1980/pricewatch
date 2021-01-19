@@ -1,5 +1,6 @@
 from models.alert import Alert
 
+
 alerts = Alert.all()
 
 for alert in alerts:
@@ -8,3 +9,5 @@ for alert in alerts:
 
 if not alerts:
     print("No alerts have been created. Add an item and an alert first to begin.")
+
+
