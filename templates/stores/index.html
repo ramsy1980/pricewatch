@@ -13,17 +13,20 @@
                     <a class="hover:underline" href="{{ store.name }}">
                         <h4>{{ store.name }}</h4>
                     </a>
-                    <small class="ml-1 text-gray-300">({{ store.url_prefix }})</small>
-                    <a class="ml-auto text-gray-500" href="{{ url_for('stores.edit_store', store_id=store._id) }}">edit</a>
-                    <a class="ml-2 text-red-500" href="{{ url_for('stores.delete_store', store_id=store._id) }}">
-                        delete
-                    </a>
+                    {% if session['email'] == config.ADMIN_EMAIL %}
+                        <small class="ml-1 text-gray-300">({{ store.url_prefix }})</small>
+                        <a class="ml-auto text-gray-500" href="{{ url_for('stores.edit_store', store_id=store._id) }}">edit</a>
+                        <a class="ml-2 text-red-500" href="{{ url_for('stores.delete_store', store_id=store._id) }}">
+                            delete
+                        </a>
+                    {% endif %}
                 </li>
             {% endfor %}
             </ul>
         </div>
-
-        <a class="py-3 px-12 bg-blue-500 hover:bg-blue-600 mr-5 rounded-md text-white text-lg focus:outline-none w-full" href="{{ url_for('stores.new_store') }}">Create new</a>
+        {% if session['email'] == config.ADMIN_EMAIL %}
+            <a class="py-3 px-12 bg-blue-500 hover:bg-blue-600 mr-5 rounded-md text-white text-lg focus:outline-none w-full" href="{{ url_for('stores.new_store') }}">Create new</a>
+        {% endif %}
     </div>
 </section>
 {% endblock %}

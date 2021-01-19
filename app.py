@@ -6,6 +6,9 @@ from views.users import user_blueprint
 
 app = Flask(__name__)
 app.secret_key = os.urandom(64)
+app.config.update(
+    ADMIN_EMAIL=os.environ.get('ADMIN_EMAIL')
+)
 
 app.register_blueprint(alert_blueprint, url_prefix="/alerts")
 app.register_blueprint(store_blueprint, url_prefix="/stores")
