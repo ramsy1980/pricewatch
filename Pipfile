@@ -11,6 +11,7 @@ Flask = "*"
 beautifulsoup4 = "*"
 requests = "*"
 passlib = "*"
+sendgrid = "*"
 
 [dev-packages]
 pylint = "*"
