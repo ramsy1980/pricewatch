@@ -36,3 +36,9 @@ def login_user():
             return e.message
 
     return render_template('/users/login.html')
+
+
+@user_blueprint.route('/logout')
+def logout_user():
+    session['email'] = None
+    return redirect(url_for('.login_user'))

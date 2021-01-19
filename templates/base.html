@@ -35,8 +35,12 @@
             <!-- CTA and Hamburger icon -->
             <div class="flex items-center">
                 <div class="mr-5 lg:mr-0">
-                    <a href="{{ url_for('users.login_user') }}" class="py-2 px-6 rounded-md text-gray-600 hover:text-gray-700 text-lg">Sign in</a>
-                    <a href="{{ url_for('users.register_user') }}" class="py-2 px-6 bg-blue-500 hover:bg-blue-600 rounded-md text-white text-lg">Sign up</a>
+                    {% if not session['email'] %}
+                        <a href="{{ url_for('users.login_user') }}" class="py-2 px-6 rounded-md text-gray-600 hover:text-gray-700 text-lg">Sign in</a>
+                        <a href="{{ url_for('users.register_user') }}" class="py-2 px-6 bg-blue-500 hover:bg-blue-600 rounded-md text-white text-lg">Sign up</a>
+                    {% else %}
+                        <a href="{{ url_for('users.logout_user') }}" class="py-2 px-6 rounded-md text-gray-600 hover:text-gray-700 text-lg">Sign out</a>
+                    {% endif %}
                 </div>
                 <div class="block lg:hidden">
                     <button
