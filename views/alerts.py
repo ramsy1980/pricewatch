@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, session
 from models.alert import Alert
 from models.store import Store
 from models.item import Item
@@ -8,7 +8,7 @@ alert_blueprint = Blueprint('alerts', __name__)
 
 @alert_blueprint.route('/')
 def index():
-    alerts = Alert.all()
+    alerts = Alert.find_many_by('user_email', session['email'])
     return render_template('alerts/index.html', alerts=alerts)
 
 
@@ -25,7 +25,7 @@ def new_alert():
         item.load_price()
         item.save_to_db()
 
-        Alert(alert_name, item._id, price_limit).save_to_db()
+        Alert(alert_name, item._id, price_limit, session['email']).save_to_db()
 
         return redirect(url_for('.index'))
 
@@ -48,5 +48,8 @@ def edit_alert(alert_id):
 
 @alert_blueprint.route('/delete/<string:alert_id>')
 def delete_alert(alert_id):
-    Alert.get_by_id(alert_id).remove_from_db()
+    alert = Alert.get_by_id(alert_id)
+    if alert.user_email == session['email']:
+        alert.remove_from_db()
+
     return redirect(url_for('.index'))
