@@ -10,6 +10,7 @@ python-dotenv = "*"
 Flask = "*"
 beautifulsoup4 = "*"
 requests = "*"
+passlib = "*"
 
 [dev-packages]
 pylint = "*"
