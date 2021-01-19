@@ -15,14 +15,43 @@
 </head>
 <body>
     <header>
-    <nav class="flex items-center justify-between p-6 container mx-auto">
-        <!-- Logo will come here -->
+        <nav class="flex items-center justify-between p-6 container mx-auto">
+            <!-- Logo -->
+            <h3>PriceWatch</h3>
 
-        <!-- Menu items in the center here -->
+            <!-- Menu items -->
+            <div class="text-lg text-gray-600 hidden lg:flex">
+                <a href="/" class="block mt-4 lg:inline-block text-blue-600 lg:mt-0 mr-10">
+                    Home
+                </a>
+                <a href="{{ url_for('stores.index') }}" class="block mt-4 lg:inline-block hover:text-gray-700 lg:mt-0 mr-10">
+                    Stores
+                </a>
+                <a href="{{ url_for('alerts.index') }}" class="block mt-4 lg:inline-block hover:text-gray-700 lg:mt-0 mr-10">
+                    Alerts
+                </a>
+            </div>
 
-        <!-- CTA buttons will come here -->
-    </nav>
+            <!-- CTA and Hamburger icon -->
+            <div class="flex items-center">
+                <div class="mr-5 lg:mr-0">
+                    <a href="{{ url_for('users.login_user') }}" class="py-2 px-6 rounded-md text-gray-600 hover:text-gray-700 text-lg">Sign in</a>
+                    <a href="{{ url_for('users.register_user') }}" class="py-2 px-6 bg-blue-500 hover:bg-blue-600 rounded-md text-white text-lg">Sign up</a>
+                </div>
+                <div class="block lg:hidden">
+                    <button
+                        class="flex items-center px-4 py-3 border rounded text-blue-500 border-blue-500 focus:outline-none">
+                        <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <title>Menu</title>
+                            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
+                        </svg>
+                    </button>
+                </div>
+
+            </div>
+        </nav>
     </header>
+
     <main class="mt-12">
         <div class="container mx-auto px-6">
             {% with messages = get_flashed_messages(with_categories=true) %}
