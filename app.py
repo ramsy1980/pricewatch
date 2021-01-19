@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, render_template
 from views.alerts import alert_blueprint
 from views.stores import store_blueprint
 from views.users import user_blueprint
@@ -9,6 +9,11 @@ app.secret_key = os.urandom(64)
 app.config.update(
     ADMIN_EMAIL=os.environ.get('ADMIN_EMAIL')
 )
+
+
+@app.route('/')
+def home():
+    return render_template('home.html')
 
 
 app.register_blueprint(alert_blueprint, url_prefix="/alerts")
