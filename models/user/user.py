@@ -25,7 +25,7 @@ class User(Model):
         try:
             return cls.find_one_by('email', email)
         except TypeError:
-            raise errors.UserNotFoundError('A user with this email does not exist')
+            raise errors.UserNotFoundError('This email is not associated with an account.')
 
     @classmethod
     def register(cls, email: str, password: str) -> bool:
@@ -33,8 +33,18 @@ class User(Model):
             raise errors.InvalidEmailError('This email does not have the right format')
         try:
             cls.find_by_email(email)
-            raise errors.UserAlreadyRegisteredError('This email is already linked to an existing account.')
+            raise errors.UserAlreadyRegisteredError('This email is already associated with an account.')
         except errors.UserNotFoundError:
             User(email, Utils.hash_password(password)).save_to_db()
+
+        return True
+
+    @classmethod
+    def is_login_valid(cls, email: str, password: str) -> bool:
+
+        user = cls.find_by_email(email)
+
+        if not Utils.verify_hashed_password(password, user.password):
+            raise errors.IncorrectPasswordError("Your password was incorrect")
 
         return True

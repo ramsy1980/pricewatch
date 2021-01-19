@@ -19,3 +19,20 @@ def register_user():
             return e.message
 
     return render_template('/users/register.html')
+
+
+@user_blueprint.route('/login', methods=["GET", "POST"])
+def login_user():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+
+        try:
+            User.is_login_valid(email, password)
+            session['email'] = email
+
+            return email
+        except errors.UserError as e:
+            return e.message
+
+    return render_template('/users/login.html')
