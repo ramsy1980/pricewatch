@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <title>
         {% if title %}
         {{ title }}
@@ -21,12 +21,17 @@
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     {% for category, message in messages %}
-                    <div class="block text-sm text-red-600 bg-red-200 border border-red-400 h-12 flex items-center p-4 rounded-sm relative mb-10 alert-{{ category }}" role="alert">
-                      {{ message }}
-                      <button type="button" data-dismiss="alert" aria-label="Close" onclick="this.parentElement.remove();">
-                          <span class="absolute top-0 bottom-0 right-0 text-2xl px-3 py-1 hover:text-red-900" aria-hidden="true" >×</span>
-                      </button>
-                    </div>
+                        <div class="text-white px-6 py-4 border-0 rounded relative mb-4 bg-{{category}}-500">
+                          <span class="text-xl inline-block mr-5 align-middle">
+                              <i class="bi bi-bell-fill"></i>
+                          </span>
+                          <span class="inline-block align-middle mr-8">
+                            {{ message }}
+                          </span>
+                          <button class="absolute bg-transparent text-2xl font-semibold leading-none right-0 top-0 mt-4 mr-6 outline-none focus:outline-none" data-dismiss="alert" aria-label="Close" onclick="this.parentElement.remove();">
+                            <span >×</span>
+                          </button>
+                        </div>
                     {% endfor %}
                 {% endif %}
             {% endwith %}
