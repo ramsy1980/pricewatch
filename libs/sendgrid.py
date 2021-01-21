@@ -24,7 +24,7 @@ class SendGrid:
         message = Mail(
             from_email=cls.SENDGRID_FROM_EMAIL,
             to_emails=to_emails,
-            subject=subject,
+            subject=f"[PriceWatch] {subject}",
             html_content=html_content,
             plain_text_content=text_content
         )
