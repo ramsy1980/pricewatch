@@ -10,7 +10,7 @@ class SendGridException(Exception):
 
 
 class SendGrid:
-    SENDGRID_FROM_EMAIL = 'ramsy@ramsy.dev'
+    SENDGRID_FROM_EMAIL = os.environ.get('SENDGRID_FROM_EMAIL')
     SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY')
 
     @classmethod
@@ -37,5 +37,5 @@ class SendGrid:
             print(response.headers)
             raise SendGridException("An error occurred while sending e-mail.")
 
-        print("E-mail sent!")
+        print(f"<SendGrid: {to_emails} {subject} {text_content}> sent!")
         return response
