@@ -9,7 +9,7 @@ def requires_login(f: Callable) -> Callable:
         if not session.get('email'):
             flash('You need to be signed in for this page.', 'danger')
             return redirect(url_for('users.login_user'))
-        return f(*args, *kwargs)
+        return f(*args, **kwargs)
 
     return decorated_function
 
@@ -20,6 +20,6 @@ def requires_admin(f: Callable) -> Callable:
         if session.get('email') != current_app.config.get('ADMIN_EMAIL', ''):
             flash('You need to be an administrator to access this page.', 'danger')
             return redirect(url_for('users.login_user'))
-        return f(*args, *kwargs)
+        return f(*args, **kwargs)
 
     return decorated_function
