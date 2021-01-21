@@ -8,7 +8,7 @@ import models.user.errors as errors
 
 @dataclass
 class User(Model):
-    collection: str = field(init=False, default='users')
+    name: str
     email: str
     password: str
     _id: str = field(default_factory=lambda: uuid4().hex)
@@ -16,6 +16,7 @@ class User(Model):
     def json(self) -> Dict:
         return {
             "_id": self._id,
+            "name": self.name,
             "email": self.email,
             "password": self.password
         }
@@ -28,16 +29,17 @@ class User(Model):
             raise errors.UserNotFoundError('This email is not associated with an account.')
 
     @classmethod
-    def register(cls, email: str, password: str) -> bool:
+    def register(cls, name: str, email: str, password: str) -> "User":
         if not Utils.email_is_valid(email):
             raise errors.InvalidEmailError('This email does not have the right format')
         try:
             cls.find_by_email(email)
             raise errors.UserAlreadyRegisteredError('This email is already associated with an account.')
         except errors.UserNotFoundError:
-            User(email, Utils.hash_password(password)).save_to_db()
+            user = User(name, email, Utils.hash_password(password))
+            user.save_to_db()
 
-        return True
+            return user
 
     @classmethod
     def is_login_valid(cls, email: str, password: str) -> bool:
