@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
-from models.user import User, errors
+from models.user import User, errors, requires_login
 
 user_blueprint = Blueprint('users', __name__)
 
@@ -7,17 +7,23 @@ user_blueprint = Blueprint('users', __name__)
 @user_blueprint.route('/register', methods=["GET", "POST"])
 def register_user():
     if request.method == 'POST':
+        name = request.form['name']
         email = request.form['email']
         password = request.form['password']
 
         try:
-            User.register(email, password)
-            session['email'] = email
+            user = User.register(name, email, password)
+            user.send_email_verification()
+            flash("An email has been sent. \
+                  Please check your inbox and confirm your email address to enable notifications.",
+                  category="green"
+                  )
 
+            session['email'] = user.email
             return redirect(url_for('alerts.index'))
         except errors.UserError as e:
-            flash(e.message, 'danger')
-            return redirect(url_for('.register_user'))
+            flash(e.message, 'red')
+            return render_template('/users/register.html', name=name, email=email, password=password)
 
     return render_template('/users/register.html')
 
@@ -34,7 +40,7 @@ def login_user():
 
             return redirect(url_for('alerts.index'))
         except errors.UserError as e:
-            flash(e.message, 'danger')
+            flash(e.message, 'red')
             return redirect(url_for('.login_user'))
 
     return render_template('/users/login.html')

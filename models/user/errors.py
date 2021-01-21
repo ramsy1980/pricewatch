@@ -19,3 +19,7 @@ class IncorrectPasswordError(UserError):
     pass
 
 
+class EmailVerificationTokenError(UserError):
+    pass
+
+

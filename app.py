@@ -3,6 +3,7 @@ from flask import Flask, render_template, request
 from views.alerts import alert_blueprint
 from views.stores import store_blueprint
 from views.users import user_blueprint
+from views.emails import email_blueprint
 
 APP_SECRET = os.environ.get('APP_SECRET')
 ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL')
@@ -29,6 +30,7 @@ def home():
 app.register_blueprint(alert_blueprint, url_prefix="/alerts")
 app.register_blueprint(store_blueprint, url_prefix="/stores")
 app.register_blueprint(user_blueprint, url_prefix="/users")
+app.register_blueprint(email_blueprint, url_prefix="/emails")
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
