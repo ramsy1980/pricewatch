@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <header>
+        <h1 class="text-5xl lg:text-6xl font-bold text-teal-600 mb-2 lg:mb-6">Profile</h1>
+    </header>
+    <section>
+        <form method="post" class="bg-gray-100 shadow-sm rounded-md p-8">
+             <div class="mb-6">
+                <label for="name" class="mb-3 block text-gray-700">Name</label>
+                <input type="text" id="name" name="name"
+                       autocomplete="name"
+                       class="bg-white rounded-md border border-gray-200 p-3 focus:outline-none w-full"
+                       placeholder="John Doe"
+                       value="{{ user.name }}"
+                       required
+                />
+            </div>
+             <div class="mb-6">
+                <label for="email" class="mb-3 block text-gray-700">Email</label>
+                <input type="text" id="email" name="email"
+                       autocomplete="email"
+                       class="bg-white rounded-md border border-gray-200 p-3 focus:outline-none w-full opacity-50"
+                       placeholder="user@example.com"
+                       value="{{ user.email }}"
+                       disabled
+                       required
+                />
+            </div>
+             <div class="mb-6">
+                <label for="email" class="mb-3 block text-gray-700">Phone number</label>
+                <input type="text" id="phone-number" name="phone-number"
+                       autocomplete="tel"
+                       class="bg-white rounded-md border border-gray-200 p-3 focus:outline-none w-full"
+                       placeholder="+31612345678"
+                       value="{{ user.phone_number }}"
+                       required
+                />
+            </div>
+            <div class="mb-6">
+                <label for="password" class="mb-3 block text-gray-700">Password</label>
+                <input type="password" id="password" name="password"
+                       autocomplete="current-password"
+                       class="bg-white rounded-md border border-gray-200 p-3 focus:outline-none w-full"
+                       placeholder="Password"
+                       value="****"
+                       required
+                />
+            </div>
+            <button type="submit" class="py-3 px-12 bg-blue-500 hover:bg-blue-600 mr-5 rounded-md text-white text-lg focus:outline-none w-full">Log in</button>
+        </form>
+    </section>
+{% endblock %}
