@@ -12,6 +12,8 @@ beautifulsoup4 = "*"
 requests = "*"
 passlib = "*"
 sendgrid = "*"
+requests-html = "*"
+pyppeteer = "*"
 
 [dev-packages]
 pylint = "*"
