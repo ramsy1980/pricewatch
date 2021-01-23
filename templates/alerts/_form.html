@@ -1,0 +1,36 @@
+<form method="post" class="bg-gray-100 shadow-sm rounded-md p-8">
+     <div class="mb-6">
+        <label for="name" class="mb-3 block text-gray-700">Name</label>
+        <input type="text" id="name" name="name"
+               class="bg-white rounded-md border border-gray-200 p-3 focus:outline-none w-full"
+               placeholder="My Wanted Item"
+               value="{{ alert.name }}"
+               required
+        />
+    </div>
+    <div class="mb-6">
+        <label for="item_url" class="mb-3 block text-gray-700">Item Url</label>
+        <input type="text" id="item_url" name="item_url"
+               class="bg-white rounded-md border border-gray-200 p-3 focus:outline-none w-full"
+               value="{{ alert.item.url }}"
+               placeholder="https://..."
+        />
+    </div>
+    <div class="mb-6">
+        <label for="price_limit" class="mb-3 block text-gray-700">Price limit</label>
+        <input type="text" id="price_limit" name="price_limit"
+               class="bg-white rounded-md border border-gray-200 p-3 focus:outline-none w-full"
+               placeholder="100"
+               aria-describedby="priceLimitHelp"
+               value="{{ alert.price_limit }}"
+               required
+        />
+        <small id="priceLimitHelp" class="form-text text-muted">
+            Under which price for the item would you like to get notified?
+        </small>
+    </div>
+
+    <button type="submit" class="py-3 px-12 bg-blue-500 hover:bg-blue-600 mr-5 rounded-md text-white text-lg focus:outline-none w-full">
+        {{ button_text }}
+    </button>
+</form>

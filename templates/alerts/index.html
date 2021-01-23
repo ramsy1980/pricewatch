@@ -6,7 +6,7 @@
 </header>
 <section>
     <div class="bg-gray-100 shadow-sm rounded-md p-8">
-        {% if alerts|length > 1 %}
+        {% if alerts|length > 0 %}
             <div class="bg-white shadow-xl rounded-lg w-1/2 mb-10">
                 <ul class="divide-y divide-gray-300">
                     {% for alert in alerts %}
@@ -14,7 +14,9 @@
                             <a class="hover:underline" href="{{ alert.item.url }}">
                                 <h4>{{ alert.name }}</h4>
                             </a>
-                            <small class="ml-1 text-gray-200">(last price: {{ alert.item.price }})</small>
+                            <small class="ml-1 text-gray-200">
+                                (last price: {{ alert.item.store.currency_symbol }} {{ alert.item.price }})
+                            </small>
                             <a class="ml-auto text-gray-500" href="{{ url_for('alerts.edit_alert', alert_id=alert._id) }}">
                                 edit
                             </a>

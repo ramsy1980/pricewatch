@@ -6,24 +6,30 @@
 </header>
 <section>
     <div class="bg-gray-100 shadow-sm rounded-md p-8">
-        <div class="bg-white shadow-xl rounded-lg w-1/2 mb-10">
-            <ul class="divide-y divide-gray-300">
-            {% for store in stores %}
-                <li class="p-4 hover:bg-gray-50 cursor-pointer flex items-center">
-                    <a class="hover:underline" href="{{ store.name }}">
-                        <h4>{{ store.name }}</h4>
-                    </a>
-                    {% if session['email'] == config.ADMIN_EMAIL %}
-                        <small class="ml-1 text-gray-300">({{ store.url_prefix }})</small>
-                        <a class="ml-auto text-gray-500" href="{{ url_for('stores.edit_store', store_id=store._id) }}">edit</a>
-                        <a class="ml-2 text-red-500" href="{{ url_for('stores.delete_store', store_id=store._id) }}">
-                            delete
+        {% if stores|length > 0 %}
+            <div class="bg-white shadow-xl rounded-lg w-1/2 mb-10">
+                <ul class="divide-y divide-gray-300">
+                {% for store in stores %}
+                    <li class="p-4 hover:bg-gray-50 cursor-pointer flex items-center">
+                        <a class="hover:underline" href="{{ store.name }}">
+                            <h4>{{ store.name }}</h4>
                         </a>
-                    {% endif %}
-                </li>
-            {% endfor %}
-            </ul>
-        </div>
+                        {% if session['email'] == config.ADMIN_EMAIL %}
+                            <small class="ml-1 text-gray-300">({{ store.url_prefix }})</small>
+                            <a class="ml-auto text-gray-500" href="{{ url_for('stores.edit_store', store_id=store._id) }}">edit</a>
+                            <a class="ml-2 text-red-500" href="{{ url_for('stores.delete_store', store_id=store._id) }}">
+                                delete
+                            </a>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+        {% else %}
+            <div class="mb-10 flex items-center text-xl">
+                No stores have been created yet.
+            </div>
+        {% endif %}
         {% if session['email'] == config.ADMIN_EMAIL %}
             <a class="py-3 px-12 bg-blue-500 hover:bg-blue-600 mr-5 rounded-md text-white text-lg focus:outline-none w-full" href="{{ url_for('stores.new_store') }}">Create new</a>
         {% endif %}

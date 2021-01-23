@@ -1,0 +1,66 @@
+<form method="post" class="bg-gray-100 shadow-sm rounded-md p-8">
+    <div class="mb-6">
+        <label for="name" class="mb-3 block text-gray-700">Name</label>
+        <input type="text" id="name" name="name"
+               class="bg-white rounded-md border border-gray-200 p-3 focus:outline-none w-full"
+               placeholder="My Store Name"
+               value="{{ store.name }}"
+               required
+        />
+    </div>
+     <div class="mb-6">
+        <label for="currency_symbol" class="mb-3 block text-gray-700">Currency Symbol</label>
+        <input type="text" id="currency_symbol" name="currency_symbol"
+               class="bg-white rounded-md border border-gray-200 p-3 focus:outline-none w-full"
+               placeholder="€"
+               value="{{ store.currency_symbol }}"
+               required
+        />
+    </div>
+    <div class="mb-6">
+        <label for="url_prefix" class="mb-3 block text-gray-700">Url prefix</label>
+        <input type="text" id="url_prefix" name="url_prefix"
+               class="bg-white rounded-md border border-gray-200 p-3 focus:outline-none w-full"
+               placeholder="https://..."
+               aria-describedby="urlPrefixHelp"
+               value="{{ store.url_prefix }}"
+               required
+        />
+        <small id="urlPrefixHelp" class="text-gray-500">
+            What URL will all items start with?
+        </small>
+    </div>
+    <div class="mb-6">
+        <label for="css_selector" class="mb-3 block text-gray-700">Price (CSS selector)</label>
+        <input type="text" id="css_selector" name="css_selector"
+               class="bg-white rounded-md border border-gray-200 p-3 focus:outline-none w-full"
+               placeholder="#my-id"
+               aria-describedby="cssSelectorHelp"
+               value="{{ store.css_selector }}"
+               required
+        />
+        <small id="cssSelectorHelp" class="text-gray-500">
+            With what pattern can we find the element that contains the price?
+            See
+            <a href="https://www.w3schools.com/cssref/css_selectors.asp" class="underline font-medium" target="_blank">
+                CSS Selector Reference
+            </a> for examples.
+        </small>
+    </div>
+    <div class="mb-6">
+        <label for="css_selector_out_of_stock" class="mb-3 block text-gray-700">Out-of-Stock (CSS selector)</label>
+        <input type="text" id="css_selector_out_of_stock" name="css_selector_out_of_stock"
+               class="bg-white rounded-md border border-gray-200 p-3 focus:outline-none w-full"
+               placeholder=".out-of-stock"
+               aria-describedby="cssSelectorOutOfStockHelp"
+               value="{{ store.css_selector_out_of_stock }}"
+        />
+        <small id="cssSelectorOutOfStockHelp" class="text-gray-500">
+            With what pattern can we find the element that contains an out of stock message? <br />
+            See <a href="https://www.w3schools.com/cssref/css_selectors.asp">CSS Selector Reference</a> for examples.
+        </small>
+    </div>
+    <button type="submit" class="py-3 px-12 bg-blue-500 hover:bg-blue-600 mr-5 rounded-md text-white text-lg focus:outline-none w-full">
+        {{ button_text }}
+    </button>
+</form>
