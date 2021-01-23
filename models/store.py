@@ -1,26 +1,28 @@
 import re
 from dataclasses import dataclass, field
 from uuid import uuid4
-from typing import Dict
 from models.model import Model
 
 
 @dataclass(eq=False)
 class Store(Model):
-    collection: str = field(init=False, default="stores")
     name: str
+    currency_symbol: str
     url_prefix: str
-    tag_name: str
-    query: Dict
+    css_selector: str
+    css_selector_out_of_stock: str
+
+    collection: str = field(init=False, default="stores")
     _id: str = field(default_factory=lambda: uuid4().hex)
 
     def json(self):
         return {
             "_id": self._id,
             "name": self.name,
+            "currency_symbol": self.currency_symbol,
             "url_prefix": self.url_prefix,
-            "tag_name": self.tag_name,
-            "query": self.query
+            "css_selector": self.css_selector,
+            "css_selector_out_of_stock": self.css_selector_out_of_stock
         }
 
     @classmethod

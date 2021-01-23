@@ -18,36 +18,44 @@ def index():
 def new_store():
     if request.method == "POST":
         name = request.form['name']
+        currency_symbol = request.form['currency_symbol']
         url_prefix = request.form['url_prefix']
-        tag_name = request.form['tag_name']
-        query = json.loads(request.form['query'])
+        css_selector = request.form['css_selector']
+        css_selector_out_of_stock = request.form['css_selector_out_of_stock']
 
         if not url_prefix.endswith("/"):
             url_prefix += "/"
 
-        Store(name, url_prefix, tag_name, query).save_to_db()
+        Store(
+            name, currency_symbol,
+            url_prefix,
+            css_selector,
+            css_selector_out_of_stock
+        ).save_to_db()
 
         return redirect(url_for('.index'))
 
-    return render_template('stores/new_store.html')
+    return render_template('stores/new_store.html', store=None)
 
 
 @store_blueprint.route('/edit/<string:store_id>', methods=["GET", "POST"])
 @requires_admin
 def edit_store(store_id):
     store = Store.get_by_id(store_id)
+    print(store)
 
     if request.method == "POST":
         store.name = request.form['name']
+        store.currency_symbol = request.form['currency_symbol']
         store.url_prefix = request.form['url_prefix']
-        store.tag_name = request.form['tag_name']
-        store.query = json.loads(request.form['query'])
+        store.css_selector = request.form['css_selector']
+        store.css_selector_out_of_stock = request.form['css_selector_out_of_stock']
 
         store.save_to_db()
 
         return redirect(url_for('.index'))
 
-    return render_template('stores/edit_store.html', store=store, query=json.dumps(store.query))
+    return render_template('stores/edit_store.html', store=store)
 
 
 @store_blueprint.route('/delete/<string:store_id>')

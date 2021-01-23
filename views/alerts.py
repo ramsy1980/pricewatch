@@ -23,7 +23,7 @@ def new_alert():
         price_limit = float(request.form['price_limit'])
 
         store = Store.find_by_url(item_url)
-        item = Item(item_url, store.tag_name, store.query)
+        item = Item(item_url, store._id)
 
         item.load_price()
         item.save_to_db()
@@ -32,7 +32,7 @@ def new_alert():
 
         return redirect(url_for('.index'))
 
-    return render_template('alerts/new_alert.html')
+    return render_template('alerts/new_alert.html', alert=None)
 
 
 @alert_blueprint.route('/edit/<string:alert_id>', methods=["GET", "POST"])
