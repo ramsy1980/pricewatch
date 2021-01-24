@@ -1,5 +1,6 @@
-from passlib.hash import pbkdf2_sha512
 import re
+import random
+from passlib.hash import pbkdf2_sha512
 
 
 class Utils:
@@ -16,3 +17,9 @@ class Utils:
     @staticmethod
     def verify_hashed_password(password: str, hashed_password: str) -> bool:
         return pbkdf2_sha512.verify(password, hashed_password)
+
+    @staticmethod
+    def random_number(length: int = 7) -> str:
+        nums = random.sample((0, 1, 2, 3, 4, 5, 6, 7, 8, 9), length)
+        string_ints = [str(num) for num in nums]
+        return "".join(string_ints)
