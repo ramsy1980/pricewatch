@@ -15,6 +15,7 @@ sendgrid = "*"
 requests-html = "*"
 pyppeteer = "*"
 twilio = "*"
+stripe = "*"
 
 [dev-packages]
 pylint = "*"
