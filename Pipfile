@@ -16,6 +16,7 @@ requests-html = "*"
 pyppeteer = "*"
 twilio = "*"
 stripe = "*"
+phonenumbers = "*"
 
 [dev-packages]
 pylint = "*"
