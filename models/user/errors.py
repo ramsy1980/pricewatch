@@ -23,3 +23,6 @@ class EmailVerificationTokenError(UserError):
     pass
 
 
+class PhoneNumberVerificationTokenError(UserError):
+    pass
+

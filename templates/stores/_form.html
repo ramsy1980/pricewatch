@@ -26,7 +26,7 @@
                value="{{ store.url_prefix }}"
                required
         />
-        <small id="urlPrefixHelp" class="text-gray-500">
+        <small id="urlPrefixHelp" class="text-xs text-gray-500 font-thin">
             What URL will all items start with?
         </small>
     </div>
@@ -39,7 +39,7 @@
                value="{{ store.css_selector }}"
                required
         />
-        <small id="cssSelectorHelp" class="text-gray-500">
+        <small id="cssSelectorHelp" class="text-xs text-gray-500 font-thin">
             With what pattern can we find the element that contains the price?
             See
             <a href="https://www.w3schools.com/cssref/css_selectors.asp" class="underline font-medium" target="_blank">
@@ -55,7 +55,7 @@
                aria-describedby="cssSelectorOutOfStockHelp"
                value="{{ store.css_selector_out_of_stock }}"
         />
-        <small id="cssSelectorOutOfStockHelp" class="text-gray-500">
+        <small id="cssSelectorOutOfStockHelp" class="text-xs text-gray-500 font-thin">
             With what pattern can we find the element that contains an out of stock message? <br />
             See <a href="https://www.w3schools.com/cssref/css_selectors.asp">CSS Selector Reference</a> for examples.
         </small>

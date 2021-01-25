@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Add credits</h1>
+    <section class="section">
+      <div class="container">
+        <button class="py-3 px-12 bg-blue-500 hover:bg-blue-600 mr-5 rounded-md text-white text-lg focus:outline-none w-full" id="submitBtn">
+          Purchase!
+        </button>
+      </div>
+    </section>
+
+<script>
+  fetch("/config", {method: "POST"})
+    .then((result) => { return result.json(); })
+    .then((data) => {
+        const stripe = Stripe(data.publicKey);
+
+        document.querySelector("#submitBtn").addEventListener("click", () => {
+          fetch("/create-checkout-session", {method: "POST"})
+          .then((result) => { return result.json(); })
+          .then((data) => {
+            console.log(data);
+            return stripe.redirectToCheckout({sessionId: data.sessionId})
+          })
+          .then((res) => {
+            console.log(res);
+          });
+    });
+  });
+</script>
+{% endblock %}

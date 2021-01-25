@@ -28,14 +28,22 @@
                 />
             </div>
              <div class="mb-6">
-                <label for="email" class="mb-3 block text-gray-700">Phone number</label>
-                <input type="text" id="phone-number" name="phone-number"
-                       autocomplete="tel"
-                       class="bg-white rounded-md border border-gray-200 p-3 focus:outline-none w-full"
-                       placeholder="+31612345678"
-                       value="{{ user.phone_number }}"
-                       required
-                />
+                <label for="national-number" class="mb-3 block text-gray-700">Phone number</label>
+                <div class="flex">
+                    <select id="country-code" name="country-code">
+                      <option id="31" value="+31">🇳🇱 +31</option>
+                      <option id="32" value="+32">🇧🇪 +32</option>
+                      <option id="33" value="+33">🇫🇷 +33</option>
+                      <option id="49" value="+49">🇩🇪 +49</option>
+                    </select>
+                    <input type="tel" id="national-number" name="national-number"
+                           autocomplete="tel"
+                           class="bg-white rounded-md border border-gray-200 p-3 focus:outline-none w-full"
+                           placeholder="612345678"
+                           value="{{ phone_number.national_number }}"
+                           pattern="[0-9]{3,12}"
+                    />
+                </div>
             </div>
             <div class="mb-6">
                 <label for="password" class="mb-3 block text-gray-700">Password</label>
@@ -47,7 +55,10 @@
                        required
                 />
             </div>
-            <button type="submit" class="py-3 px-12 bg-blue-500 hover:bg-blue-600 mr-5 rounded-md text-white text-lg focus:outline-none w-full">Log in</button>
+            <button type="submit" class="py-3 px-12 bg-blue-500 hover:bg-blue-600 mr-5 rounded-md text-white text-lg focus:outline-none w-full">
+                Update Profile
+            </button>
         </form>
     </section>
+<script>document.getElementById("{{ phone_number.country_code }}").selected = "true";</script>
 {% endblock %}

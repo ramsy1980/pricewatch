@@ -1,43 +1,101 @@
+import os
+import models.user.errors as errors
 from uuid import uuid4
 from datetime import datetime, timedelta
 from dataclasses import dataclass, field
 from typing import Dict, Union
 from models.model import Model
 from common.utils import Utils
-import models.user.errors as errors
 from libs.sendgrid import SendGrid
+from libs.twilio import Twilio
 
 
 @dataclass
 class User(Model):
     name: str
-    email: str
     password: str
+    email: str
 
     email_verification_send_at: Union[datetime, None] = None
     email_verified_at: Union[datetime, None] = None
     email_verification_token: Union[str, None] = None
     email_verification_token_expires_at: Union[datetime, None] = None
 
+    phone_number: str = ""
+    phone_number_verification_send_at: Union[datetime, None] = None
+    phone_number_verified_at: Union[datetime, None] = None
+    phone_number_verification_token: Union[str, None] = None
+    phone_number_verification_token_expires_at: Union[datetime, None] = None
+
+    credits_available: int = 0
+    credits_consumed: int = 0
+
     _id: str = field(default_factory=lambda: uuid4().hex)
     created_at: datetime = field(init=False, default=datetime.utcnow())
     collection: str = field(init=False, default='users')
+
+    def has_credits(self) -> bool:
+        return self.credits_available - self.credits_consumed > 0
 
     def json(self) -> Dict:
         return {
             "_id": self._id,
             "name": self.name,
             "email": self.email,
+            "phone_number": self.phone_number,
             "password": self.password,
             "email_verification_send_at": self.email_verification_send_at,
             "email_verified_at": self.email_verified_at,
             "email_verification_token": self.email_verification_token,
-            "email_verification_token_expires_at": self.email_verification_token_expires_at
+            "email_verification_token_expires_at": self.email_verification_token_expires_at,
+            "phone_number_verification_send_at": self.phone_number_verification_send_at,
+            "phone_number_verified_at": self.phone_number_verified_at,
+            "phone_number_verification_token": self.phone_number_verification_token,
+            "phone_number_verification_token_expires_at": self.phone_number_verification_token_expires_at,
+            "credits_available": self.credits_available,
+            "credits_consumed": self.credits_consumed
         }
+
+    def send_phone_number_verification(self, phone_number: str) -> str:
+        if self.phone_number_verification_token is None \
+                or datetime.utcnow() > self.phone_number_verification_token_expires_at:
+
+            self.phone_number_verification_token = Utils.random_number(7)
+            Twilio.send_sms(
+                phone_number, f"\
+                    Your PriceWatch verification code is {self.phone_number_verification_token} \
+                    This code is only valid for 15 minutes \
+                ")
+
+            self.phone_number_verification_send_at = datetime.utcnow()
+            self.phone_number_verification_token_expires_at = self.phone_number_verification_send_at + timedelta(
+                minutes=15)
+
+            self.save_to_db()
+
+        return self.phone_number_verification_token
+
+    def verify_phone_number_verification(self, phone_number: str, verification_code: str) -> bool:
+        if self.phone_number_verified_at is not None:
+            raise errors.PhoneNumberVerificationTokenError('Phone number is already verified')
+
+        if datetime.utcnow() > self.phone_number_verification_token_expires_at:
+            raise errors.PhoneNumberVerificationTokenError('This token is expired.')
+
+        if self.phone_number_verification_token == verification_code:
+            self.phone_number = phone_number
+            self.phone_number_verified_at = datetime.utcnow()
+            self.phone_number_verification_token = None
+            self.phone_number_verification_token_expires_at = None
+            self.save_to_db()
+
+            return True
+
+        return False
 
     def send_email_verification(self) -> None:
         self.email_verification_token = uuid4().hex
-        verify_email_link = f"http://localhost:5000/emails/verify/{self.email_verification_token}"
+        verify_email_link = f"{os.environ.get('APP_DOMAIN_URL')}/emails/verify/{self.email_verification_token}"
 
         SendGrid.send_email(
             to_emails=[self.email],
@@ -54,6 +112,9 @@ class User(Model):
 
     def is_email_verified(self):
         return self.email_verified_at is not None
+
+    def is_phone_number_verified(self):
+        return self.phone_number_verified_at is not None
 
     def verify_email(self) -> bool:
         if self.email_verified_at is not None:
@@ -91,7 +152,7 @@ class User(Model):
             cls.find_by_email(email)
             raise errors.UserAlreadyRegisteredError('This email is already associated with an account.')
         except errors.UserNotFoundError:
-            user = User(name, email, Utils.hash_password(password))
+            user = User(name=name, email=email, password=Utils.hash_password(password))
             user.save_to_db()
 
             return user

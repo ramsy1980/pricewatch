@@ -1,8 +1,8 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session
+from flask import Blueprint, render_template, request, redirect, url_for, session, flash
 from models.alert import Alert
 from models.store import Store
 from models.item import Item
-from models.user import requires_login
+from models.user import User, requires_login
 
 alert_blueprint = Blueprint('alerts', __name__)
 
@@ -10,7 +10,11 @@ alert_blueprint = Blueprint('alerts', __name__)
 @alert_blueprint.route('/')
 @requires_login
 def index():
+    user = User.find_by_email(session['email'])
     alerts = Alert.find_many_by('user_email', session['email'])
+    if user.phone_number == "":
+        link = f"<a href='{url_for('users.user_profile')}' class='underline'>update</a>"
+        flash(f"Unable to send SMS notifications. Please {link} your phone number first", "yellow")
     return render_template('alerts/index.html', alerts=alerts)
 
 

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <header>
+        <h1 class="text-5xl lg:text-6xl font-bold text-teal-600 mb-2 lg:mb-6">Phone number verification</h1>
+    </header>
+    <section>
+        <form method="post" class="bg-gray-100 shadow-sm rounded-md p-8">
+        <div class="mb-6">
+            <label for="verification_code" class="mb-3 block text-gray-700">Verification code</label>
+            <input type="number" id="verification_code" name="verification_code"
+                   class="bg-white rounded-md border border-gray-200 p-3 focus:outline-none w-full"
+                   placeholder="1234567"
+                   aria-describedby="verificationCodeHelp"
+                   required
+            />
+            <small id="verificationCodeHelp" class="text-xs text-gray-500 font-thin">
+                Please enter the 7-digit verification code which has been sent to you.
+            </small>
+        </div>
+
+        <button type="submit" class="py-3 px-12 bg-blue-500 hover:bg-blue-600 mr-5 rounded-md text-white text-lg focus:outline-none w-full">
+            Verify
+        </button>
+        </form>
+    </section>
+
+{% endblock %}
