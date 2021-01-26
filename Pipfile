@@ -17,6 +17,7 @@ pyppeteer = "*"
 twilio = "*"
 stripe = "*"
 phonenumbers = "*"
+python-dateutil = "*"
 
 [dev-packages]
 pylint = "*"
