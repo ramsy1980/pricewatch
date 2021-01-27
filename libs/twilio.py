@@ -1,5 +1,6 @@
 import os
 from twilio.rest import Client
+from dateutil.parser import parse
 
 
 class TwilioException(Exception):
@@ -30,9 +31,11 @@ class Twilio:
                 from_=cls.TWILIO_FROM_PHONE_NUMBER,
                 body=message)
 
-            print("Message sent!", message.sid)
+            message_id = message.sid
+            date = message.date_created
+            print(date, "SMS sent:", message_id)
 
-            return message.sid
+            return date, message_id
         except TwilioException as e:
-            print("Error sending message", e.message)
+            print("Error sending SMS message:", e.message)
             return e.message

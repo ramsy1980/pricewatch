@@ -2,6 +2,7 @@ import os
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 from typing import List
+from dateutil.parser import parse
 
 
 class SendGridException(Exception):
@@ -37,5 +38,9 @@ class SendGrid:
             print(response.headers)
             raise SendGridException("An error occurred while sending e-mail.")
 
-        print(f"<SendGrid: {to_emails} {subject} {text_content}> sent!")
-        return response
+        message_id = response.headers.get('X-Message-Id')
+        date = parse(response.headers.get('Date'))
+
+        print(date, "Email sent:", message_id)
+
+        return date, message_id

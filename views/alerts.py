@@ -27,12 +27,12 @@ def new_alert():
         price_limit = float(request.form['price_limit'])
 
         store = Store.find_by_url(item_url)
-        item = Item(item_url, store._id)
+        item = Item(item_url, store.id)
 
         item.load_price()
         item.save_to_db()
 
-        Alert(alert_name, item._id, price_limit, session['email']).save_to_db()
+        Alert(alert_name, item.id, price_limit, session['email']).save_to_db()
 
         return redirect(url_for('.index'))
 

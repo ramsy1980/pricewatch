@@ -40,3 +40,7 @@ class Store(Model):
         match = pattern.search(url)
         url_prefix = match.group(1)
         return cls.get_by_url_prefix(url_prefix)
+
+    @property
+    def id(self):
+        return self._id

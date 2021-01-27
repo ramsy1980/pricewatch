@@ -20,7 +20,7 @@ class Item(Model):
         self.store = Store.get_by_id(self.store_id)
 
     def __repr__(self) -> str:
-        return f"<Item store={self.store.url_prefix} >"
+        return f"<Item store={self.store.name}>"
 
     def load_price(self) -> float:
         try:
@@ -43,3 +43,7 @@ class Item(Model):
             "price": self.price,
             "out_of_stock": self.out_of_stock,
         }
+
+    @property
+    def id(self):
+        return self._id

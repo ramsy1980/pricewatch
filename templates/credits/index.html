@@ -19,12 +19,28 @@
         {% if payments|length > 0 %}
             {% for payment in payments %}
             <div class="flex items-center text-xl">
-                {{ payment.created }} - credits: {{ payment.credits }}
+                {{ payment.created }} - credits: +{{ payment.credits }}
             </div>
             {% endfor %}
         {% else %}
             <div class="mb-10 flex items-center text-xl">
                 No payments have been found yet. Purchase some to get started.
+            </div>
+        {% endif %}
+    </div>
+    <div class="bg-gray-100 shadow-sm rounded-md p-8">
+        <h2 class="ext-md lg:text-2xl text-gray-600 mb-3">
+        Notifications
+        </h2>
+        {% if notifications|length > 0 %}
+            {% for notification in notifications %}
+            <div class="flex items-center text-xl">
+                {{ notification.created }}: {{ notification.notification_type }} - {{ notification.alert.name }}
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="mb-10 flex items-center text-xl">
+                No notifications have been found yet.
             </div>
         {% endif %}
     </div>

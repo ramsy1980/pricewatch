@@ -99,7 +99,7 @@ def create_checkout_session():
 
         # ?session_id={CHECKOUT_SESSION_ID} means the redirect will have the session ID set as a query param
         checkout_session = stripe.checkout.Session.create(
-            client_reference_id=user._id,
+            client_reference_id=user.id,
             success_url=APP_DOMAIN_URL + success_uri,
             cancel_url=APP_DOMAIN_URL + "/payments/cancelled",
             payment_method_types=["ideal", "card", "bancontact", "eps", "giropay", "sofort"],
@@ -146,11 +146,13 @@ def stripe_webhook():
 
         payment_intent = stripe.PaymentIntent.retrieve(payment_intent_id)
         created = datetime.fromtimestamp(payment_intent.created)
-        credits = int(payment_intent.amount / 100)
+        credits_added = int(payment_intent.amount / 100)
 
-        Payment(_id=payment_intent_id, credits=credits, created=created, user_id=user._id).save_to_db()
+        payment = Payment(_id=payment_intent_id, credits=credits_added, created=created, user_id=user.id)
+        print("Payment added", payment)
+        payment.save_to_db()
 
-        user.credits_available += credits
+        user.credits_available += credits_added
         user.save_to_db()
 
     return "Success", 200

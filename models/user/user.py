@@ -130,6 +130,16 @@ class User(Model):
 
         return True
 
+    def consume_credits(self, amount: int):
+        self.credits_consumed += amount
+        self.save_to_db()
+
+    def consume_one_credit(self):
+        self.consume_credits(1)
+
+    def has_credits(self) -> bool:
+        return (self.credits_available - self.credits_consumed) > 0
+
     @classmethod
     def find_by_email_verification_token(cls, email_verification_token: str) -> "User":
         try:
@@ -164,3 +174,7 @@ class User(Model):
             raise errors.IncorrectPasswordError("Your password was incorrect")
 
         return True
+
+    @property
+    def id(self):
+        return self._id

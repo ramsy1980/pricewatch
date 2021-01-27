@@ -6,6 +6,7 @@ from models.model import Model
 from models.user import User
 from libs.sendgrid import SendGrid
 from libs.twilio import Twilio
+from models.notification import Notification, NotificationType
 
 
 @dataclass(eq=False)
@@ -48,16 +49,44 @@ class Alert(Model):
                                    Go to this address to check your item: {self.item.url}."
 
             if self.user.is_email_verified():
-                SendGrid.send_email(
-                    to_emails=[self.user_email],
-                    subject=f"Notification for {self.name}",
-                    html_content=html_content,
-                    text_content=text_content
-                )
+                try:
+                    date, message_id = SendGrid.send_email(
+                        to_emails=[self.user_email],
+                        subject=f"Notification for {self.name}",
+                        html_content=html_content,
+                        text_content=text_content
+                    )
+                    Notification(
+                        _id=message_id,
+                        user_id=self.user.id,
+                        alert_id=self._id,
+                        notification_type=NotificationType.EMAIL,
+                        created=date
+                    ).save_to_db()
+                except Exception as e:
+                    excepName = type(e).__name__
+                    print(excepName, "Failed to send email")
+
             else:
                 print("Unable to send email. Email is not verified.")
 
             if self.user.is_phone_number_verified():
-                Twilio.send_sms(self.user.phone_number, text_content)
+                if not self.user.has_credits():
+                    print("Insufficient credits. Unable to send SMS.")
+                    return
+
+                try:
+                    date, message_id = Twilio.send_sms(self.user.phone_number, text_content)
+                    Notification(
+                        _id=message_id,
+                        user_id=self.user.id,
+                        alert_id=self._id,
+                        notification_type=NotificationType.SMS,
+                        created=date
+                    ).save_to_db()
+                    self.user.consume_one_credit()
+                except Exception as e:
+                    excepName = type(e).__name__
+                    print(excepName, "Failed to send SMS")
             else:
                 print("Unable to send SMS. Phone number is not verified.")

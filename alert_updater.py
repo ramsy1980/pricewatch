@@ -8,6 +8,6 @@ for alert in alerts:
     alert.notify_if_price_reached()
 
 if not alerts:
-    print("No alerts have been created. Add an item and an alert first to begin.")
+    print("No alerts have been created. Create an alert to get started.")
 
 
