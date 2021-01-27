@@ -3,6 +3,10 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
+[scripts]
+test = "python -m pytest"
+dev = "flask run"
+
 [packages]
 pymongo = {extras = ["srv"], version = "*"}
 gunicorn = "*"
