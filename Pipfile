@@ -28,6 +28,7 @@ pylint = "*"
 rope = "*"
 autopep8 = "*"
 pytest = "*"
+pytest-cov = "*"
 
 [requires]
 python_version = "3.9"
