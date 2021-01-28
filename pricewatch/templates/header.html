@@ -1,20 +1,29 @@
 <header>
     <nav class="flex items-center justify-between p-6 container mx-auto">
         <!-- Logo -->
-        <a href="/"><div class="text-3xl font-mono text-blue-900">PriceWatch</div></a>
+        <a href="/" class="flex flex-row items-center text-blue-600">
+            <svg width="32" height="32" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+            </svg>
+            <div class="ml-1 text-blue-900 font-mono text-3xl">
+                PriceWatch
+            </div>
+        </a>
 
         <!-- Menu items -->
         <div class="text-lg text-gray-600 hidden lg:flex">
-            <a href="/" class="block mt-4 lg:inline-block text-blue-600 lg:mt-0 mr-10">
+            <a href="/" class="block mt-4 lg:inline-block {{ 'text-blue-600' if active == 'home' else 'text-gray-600 hover:text-gray-700' }} lg:mt-0 mr-10" id="home">
                 Home
             </a>
-            <a href="{{ url_for('stores.index') }}" class="block mt-4 lg:inline-block hover:text-gray-700 lg:mt-0 mr-10">
+            {% if is_admin %}
+            <a href="{{ url_for('stores.index') }}" class="block mt-4 lg:inline-block {{ 'text-blue-600' if active == 'stores' else 'text-gray-600 hover:text-gray-700' }} lg:mt-0 mr-10" id="stores">
                 Stores
             </a>
-            <a href="{{ url_for('alerts.index') }}" class="block mt-4 lg:inline-block hover:text-gray-700 lg:mt-0 mr-10">
+            {% endif %}
+            <a href="{{ url_for('alerts.index') }}" class="block mt-4 lg:inline-block {{ 'text-blue-600' if active == 'alerts' else 'text-gray-600 hover:text-gray-700' }} lg:mt-0 mr-10" id="alerts">
                 Alerts
             </a>
-            <a href="{{ url_for('credits.index') }}" class="block mt-4 lg:inline-block hover:text-gray-700 lg:mt-0 mr-10">
+            <a href="{{ url_for('credits.index') }}" class="block mt-4 lg:inline-block {{ 'text-blue-600' if active == 'credits' else 'text-gray-600 hover:text-gray-700' }} lg:mt-0 mr-10" id="credits">
                 Credits
             </a>
         </div>
@@ -26,7 +35,7 @@
                     <a href="{{ url_for('users.login_user') }}" class="py-2 px-6 rounded-md text-gray-600 hover:text-gray-700 text-lg">Sign in</a>
                     <a href="{{ url_for('users.register_user') }}" class="py-2 px-6 bg-blue-500 hover:bg-blue-600 rounded-md text-white text-lg">Sign up</a>
                 {% else %}
-                    <a href="{{ url_for('users.user_profile') }}" class="py-2 px-6 rounded-md text-gray-600 hover:text-gray-700 text-lg">Profile</a>
+                    <a href="{{ url_for('users.user_profile') }}" class="py-2 px-6 rounded-md {{ 'text-blue-600' if active == 'profile' else 'text-gray-600 hover:text-gray-700' }} text-lg">Profile</a>
                     <a href="{{ url_for('users.logout_user') }}" class="py-2 px-6 rounded-md text-gray-600 hover:text-gray-700 text-lg">Sign out</a>
                 {% endif %}
             </div>
@@ -43,3 +52,4 @@
         </div>
     </nav>
 </header>
+
