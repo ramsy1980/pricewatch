@@ -8,7 +8,7 @@ store_blueprint = Blueprint('stores', __name__)
 @requires_login
 def index():
     stores = Store.all()
-    return render_template('stores/index.html', stores=stores)
+    return render_template('stores/index.html', stores=stores, active="stores")
 
 
 @store_blueprint.route('/new', methods=["GET", "POST"])

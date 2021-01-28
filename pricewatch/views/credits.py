@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, session, flash, url_for
 from pricewatch.models import User, requires_login, Payment, Notification
+from pricewatch.common import DisplayFlashMessages
 
 credit_blueprint = Blueprint('credits', __name__)
 
@@ -10,11 +11,11 @@ def index():
     user = User.find_by_email(session['email'])
     payments = Payment.find_many_by("user_id", user.id)
     notifications = Notification.find_many_by("user_id", user.id)
-    print("payments", payments)
-    link = f"<a href='{url_for('users.user_profile')}' class='underline'>update</a>"
-    if user.phone_number == "":
-        flash(f"Unable to send SMS notifications. Please {link} your phone number first", "yellow")
-    return render_template('/credits/index.html', user=user, payments=payments, notifications=notifications)
+
+    if user.is_email_verified() and user.phone_number == "":
+        DisplayFlashMessages.phone_number_not_verified()
+
+    return render_template('/credits/index.html', user=user, payments=payments, notifications=notifications, active="credits")
 
 
 @credit_blueprint.route('/add')

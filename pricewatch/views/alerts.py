@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
-from pricewatch.models.alert import Alert
-from pricewatch.models import Store, Item, User, requires_login
-
+from pricewatch.models import Alert, Store, Item, User, requires_login
+from pricewatch.common.display_flash_messages import DisplayFlashMessages
 alert_blueprint = Blueprint('alerts', __name__)
 
 
@@ -10,10 +9,10 @@ alert_blueprint = Blueprint('alerts', __name__)
 def index():
     user = User.find_by_email(session['email'])
     alerts = Alert.find_many_by('user_email', session['email'])
-    if user.phone_number == "":
-        link = f"<a href='{url_for('users.user_profile')}' class='underline'>update</a>"
-        flash(f"Unable to send SMS notifications. Please {link} your phone number first", "yellow")
-    return render_template('alerts/index.html', alerts=alerts)
+    if user.is_email_verified() and user.phone_number == "":
+        DisplayFlashMessages.phone_number_not_verified()
+
+    return render_template('alerts/index.html', alerts=alerts, active="alerts")
 
 
 @alert_blueprint.route('/new', methods=["GET", "POST"])

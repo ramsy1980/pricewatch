@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
 from pricewatch.models.user import User, errors, requires_login
-from pricewatch.common import Utils
+from pricewatch.common import Utils, DisplayFlashMessages
 import phonenumbers
 
 user_blueprint = Blueprint('users', __name__)
@@ -53,6 +53,9 @@ def login_user():
 def user_profile():
     user = User.find_by_email(session['email'])
 
+    if user.is_email_verified() and user.phone_number == "":
+        DisplayFlashMessages.phone_number_not_verified()
+
     if request.method == 'POST':
         name = request.form['name']
         password = request.form['password']
@@ -90,7 +93,7 @@ def user_profile():
         flash('Unable to send alerts. Your email address is not verified.', 'yellow')
 
     phone_number = phonenumbers.parse(user.phone_number, None) if user.phone_number != "" else None
-    return render_template('/users/profile.html', user=user, phone_number=phone_number)
+    return render_template('/users/profile.html', user=user, phone_number=phone_number, active="profile")
 
 
 @user_blueprint.route('/logout')
