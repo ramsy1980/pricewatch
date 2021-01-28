@@ -1,7 +1,5 @@
-import json
 from flask import Blueprint, render_template, request, redirect, url_for
-from models.store import Store
-from models.user import requires_login, requires_admin
+from pricewatch.models import Store, requires_login, requires_admin
 
 store_blueprint = Blueprint('stores', __name__)
 

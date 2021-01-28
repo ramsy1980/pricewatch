@@ -1,8 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
-from models.alert import Alert
-from models.store import Store
-from models.item import Item
-from models.user import User, requires_login
+from pricewatch.models.alert import Alert
+from pricewatch.models import Store, Item, User, requires_login
 
 alert_blueprint = Blueprint('alerts', __name__)
 

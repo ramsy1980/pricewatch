@@ -1,9 +1,9 @@
 from dataclasses import dataclass, field
 from uuid import uuid4
 from typing import Dict
-from models.model import Model
-from models.store import Store
-from libs.request import Request, ItemOutOfStockError
+from pricewatch.models.model import Model
+from pricewatch.models.store import Store
+from pricewatch.libs.request import Request, ItemOutOfStockError
 
 
 @dataclass(eq=False)

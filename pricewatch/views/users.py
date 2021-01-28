@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
-from models.user import User, errors, requires_login
-from common.utils import Utils
+from pricewatch.models.user import User, errors, requires_login
+from pricewatch.common import Utils
 import phonenumbers
 
 user_blueprint = Blueprint('users', __name__)

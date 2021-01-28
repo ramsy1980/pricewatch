@@ -1,5 +1,6 @@
 from requests_html import HTMLSession
 
+
 class ItemOutOfStockError(Exception):
     pass
 

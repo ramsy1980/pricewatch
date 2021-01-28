@@ -1,7 +1,5 @@
 from flask import Blueprint, render_template, session, flash, url_for
-from models.user import User, requires_login
-from models.payment import Payment
-from models.notification import Notification
+from pricewatch.models import User, requires_login, Payment, Notification
 
 credit_blueprint = Blueprint('credits', __name__)
 

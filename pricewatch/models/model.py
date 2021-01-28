@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from typing import Dict, List, TypeVar, Type, Union
-from common.database import database
+from pricewatch.common import database
 
 T = TypeVar('T', bound='Model')
 

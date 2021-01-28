@@ -1,4 +1,4 @@
-from models.alert import Alert
+from pricewatch.models import Alert
 
 
 alerts = Alert.all()

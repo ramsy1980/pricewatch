@@ -1,10 +1,10 @@
 from dataclasses import dataclass, field
 from typing import Dict
-from models.model import Model
-from models.user import User
+from pricewatch.models.model import Model
+from pricewatch.models.user import User
 from datetime import datetime
 from enum import Enum
-import models.alert
+import pricewatch.models.alert
 
 
 class NotificationType(Enum):
@@ -26,7 +26,7 @@ class Notification(Model):
 
     def __post_init__(self):
         self.user = User.get_by_id(self.user_id)
-        self.alert = models.alert.Alert.get_by_id(self.alert_id)
+        self.alert = pricewatch.models.alert.Alert.get_by_id(self.alert_id)
 
     def __repr__(self) -> str:
         return f"<Notification user_id={self.user_id}>"

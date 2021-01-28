@@ -2,14 +2,8 @@ import os
 import stripe
 from datetime import datetime
 from flask import Flask, render_template, jsonify, session, request, redirect, url_for
-from models.payment import Payment
-from views.alerts import alert_blueprint
-from views.stores import store_blueprint
-from views.users import User, user_blueprint, requires_login, errors
-from views.emails import email_blueprint
-from views.phone_numbers import phone_number_blueprint
-from views.credits import credit_blueprint
-from views.payments import payment_blueprint
+from pricewatch.models import Payment, User, requires_login, errors
+from pricewatch.views import alert_blueprint, store_blueprint, user_blueprint, email_blueprint, phone_number_blueprint, credit_blueprint, payment_blueprint
 
 APP_DOMAIN_URL = os.environ.get('APP_DOMAIN_URL')
 APP_SECRET = os.environ.get('APP_SECRET')
@@ -33,10 +27,9 @@ if STRIPE_ENDPOINT_SECRET is None:
 
 stripe.api_key = STRIPE_SECRET_KEY
 
-
 app = Flask(__name__)
-
 app.secret_key = APP_SECRET
+app.template_folder="pricewatch/templates"
 
 app.config.update(
     ADMIN_EMAIL=ADMIN_EMAIL,

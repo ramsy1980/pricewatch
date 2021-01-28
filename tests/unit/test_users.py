@@ -1,4 +1,4 @@
-from models.user import User
+from pricewatch.models.user import User
 
 
 def test_new_user():

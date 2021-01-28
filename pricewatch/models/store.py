@@ -1,7 +1,7 @@
 import re
 from dataclasses import dataclass, field
 from uuid import uuid4
-from models.model import Model
+from pricewatch.models.model import Model
 
 
 @dataclass(eq=False)

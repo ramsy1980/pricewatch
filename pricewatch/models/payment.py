@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import Dict
-from models.model import Model
-from models.user import User
+from pricewatch.models.model import Model
+from pricewatch.models.user import User
 from datetime import datetime
 
 
