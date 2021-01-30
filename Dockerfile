@@ -4,10 +4,9 @@ MAINTAINER ramsy@ramsy.dev
 
 COPY . /app
 WORKDIR /app
-
-RUN pip install pipenv
-
-RUN pipenv install --system --deploy
+RUN apk add --update --no-cache g++ gcc libxml2-dev libxslt-dev python-dev libffi-dev openssl-dev make
+RUN pip install pipenv && \
+    pipenv install --system --deploy
 
 # ENV APP_SECRET
 # ENV MONGODB_URI
