@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
-from pricewatch.models import Alert, Store, Item, User, requires_login
-from pricewatch.common.display_flash_messages import DisplayFlashMessages
+from src.models import Alert, Store, Item, User, requires_login
+from src.common.display_flash_messages import DisplayFlashMessages
 alert_blueprint = Blueprint('alerts', __name__)
 
 

@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from pricewatch.models import Store, requires_login, requires_admin
+from src.models import Store, requires_login, requires_admin
 
 store_blueprint = Blueprint('stores', __name__)
 

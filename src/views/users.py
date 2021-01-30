@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session, flash
-from pricewatch.models.user import User, errors, requires_login
-from pricewatch.common import Utils, DisplayFlashMessages
+import os
 import phonenumbers
+from flask import Blueprint, render_template, request, redirect, url_for, session, flash
+from src.models.user import User, errors, requires_login
+from src.common import Utils, DisplayFlashMessages
 
 user_blueprint = Blueprint('users', __name__)
 
@@ -22,6 +23,8 @@ def register_user():
                   )
 
             session['email'] = user.email
+            session['is_admin'] = os.environ.get('ADMIN_EMAIL') == user.email
+
             return redirect(url_for('alerts.index'))
         except errors.UserError as e:
             flash(e.message, 'red')
@@ -39,6 +42,7 @@ def login_user():
         try:
             User.is_login_valid(email, password)
             session['email'] = email
+            session['is_admin'] = os.environ.get('ADMIN_EMAIL') == email
 
             return redirect(url_for('alerts.index'))
         except errors.UserError as e:

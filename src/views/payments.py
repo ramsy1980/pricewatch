@@ -1,5 +1,5 @@
 from flask import Blueprint, flash, redirect, url_for
-from pricewatch.models.user import requires_login
+from src.models.user import requires_login
 
 payment_blueprint = Blueprint('payments', __name__)
 

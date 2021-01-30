@@ -1,5 +1,5 @@
 from flask import Blueprint, redirect, url_for, session, flash
-from pricewatch.models.user import User, errors
+from src.models.user import User, errors
 
 email_blueprint = Blueprint('emails', __name__)
 

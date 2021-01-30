@@ -1,4 +1,4 @@
-from pricewatch.models.user import User
+from src.models import User
 
 
 def test_new_user():
@@ -7,7 +7,12 @@ def test_new_user():
     WHEN a new User is created
     THEN check the email, hashed_password, and role fields are defined correctly
     """
-    user = User('John Doe', 'FlaskIsAwesome', 'john.doe@gmail.com')
-    assert user.name == 'John Doe'
-    assert user.email == 'john.doe@gmail.com'
-    assert user.password == 'FlaskIsAwesome'
+    name = "name"
+    password = "password"
+    email = "email@example.tld"
+
+    user = User(name, password, email)
+
+    assert user.name == name
+    assert user.password == password
+    assert user.email == email

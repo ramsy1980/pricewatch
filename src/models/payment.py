@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import Dict
-from pricewatch.models.model import Model
-from pricewatch.models.user import User
+from src.models.model import Model
+from src.models.user import User
 from datetime import datetime
 
 
@@ -9,7 +9,7 @@ from datetime import datetime
 class Payment(Model):
     _id: str
     user_id: str
-    credits: int
+    amount: int
     created: datetime
     collection: str = field(init=False, default="payments")
 
@@ -17,12 +17,12 @@ class Payment(Model):
         self.user = User.get_by_id(self.user_id)
 
     def __repr__(self) -> str:
-        return f"<Payment user_id={self.user_id} credits={self.credits}>"
+        return f"<Payment user_id={self.user_id} credits={self.amount}>"
 
     def json(self) -> Dict:
         return {
             "_id": self._id,
             "user_id": self.user_id,
-            "credits": self.credits,
+            "amount": self.amount,
             "created": self.created
         }

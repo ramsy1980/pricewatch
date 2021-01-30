@@ -2,9 +2,9 @@ import os
 import stripe
 from datetime import datetime
 from flask import Flask, render_template, jsonify, session, request, redirect, url_for
-from pricewatch.models import Payment, User, requires_login, errors
-from pricewatch.views import alert_blueprint, store_blueprint, user_blueprint, email_blueprint, phone_number_blueprint, credit_blueprint, payment_blueprint
-from pricewatch.common import DisplayFlashMessages
+from src.models import Payment, User, requires_login, errors
+from src.views import alert_blueprint, store_blueprint, user_blueprint, email_blueprint, phone_number_blueprint, credit_blueprint, payment_blueprint
+from src.common import DisplayFlashMessages
 
 APP_DOMAIN_URL = os.environ.get('APP_DOMAIN_URL')
 APP_SECRET = os.environ.get('APP_SECRET')
@@ -30,7 +30,7 @@ stripe.api_key = STRIPE_SECRET_KEY
 
 app = Flask(__name__)
 app.secret_key = APP_SECRET
-app.template_folder="pricewatch/templates"
+app.template_folder="src/templates"
 
 app.config.update(
     ADMIN_EMAIL=ADMIN_EMAIL,
@@ -48,15 +48,12 @@ def home():
     try:
         email = session.get('email', None)
         user = User.find_by_email(email)
+        if user.is_email_verified() and user.phone_number == "":
+            DisplayFlashMessages.phone_number_not_verified()
     except errors.UserNotFoundError:
         user = None
 
-    is_admin: bool = session.get('email') != app.config.get('ADMIN_EMAIL', '')
-
-    if user.is_email_verified() and user.phone_number == "":
-        DisplayFlashMessages.phone_number_not_verified()
-
-    return render_template('home.html', user=user, is_admin=True, active="home")
+    return render_template('home.html', user=user, active="home")
 
 
 app.register_blueprint(alert_blueprint, url_prefix="/alerts")

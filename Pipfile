@@ -5,6 +5,7 @@ name = "pypi"
 
 [scripts]
 test = "python -m pytest --cov-report=html --cov=pricewatch -v"
+"test:watch" = "ptw --onpass 'say passed' --onfail 'say failed'"
 dev = "flask run"
 
 [packages]
@@ -29,6 +30,7 @@ rope = "*"
 autopep8 = "*"
 pytest = "*"
 pytest-cov = "*"
+pytest-watch = "*"
 
 [requires]
 python_version = "3.9"

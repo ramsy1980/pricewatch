@@ -1,13 +1,13 @@
 import os
-import pricewatch.models.user.errors as errors
+import src.models.user.errors as errors
 from uuid import uuid4
 from datetime import datetime, timedelta
 from dataclasses import dataclass, field
 from typing import Dict, Union
-from pricewatch.models.model import Model
-from pricewatch.common import Utils
-from pricewatch.libs.sendgrid import SendGrid
-from pricewatch.libs.twilio import Twilio
+from src.models.model import Model
+from src.common import Utils
+from src.libs.sendgrid import SendGrid
+from src.libs.twilio import Twilio
 
 
 @dataclass

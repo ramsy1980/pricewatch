@@ -1,6 +1,6 @@
 import phonenumbers
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
-from pricewatch.models.user import User, requires_login
+from src.models.user import User, requires_login
 
 phone_number_blueprint = Blueprint('phone-numbers', __name__)
 

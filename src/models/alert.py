@@ -1,12 +1,13 @@
 from uuid import uuid4
 from dataclasses import dataclass, field
 from typing import Dict
-from pricewatch.models.item import Item
-from pricewatch.models.model import Model
-from pricewatch.models.user import User
-from pricewatch.models.notification import Notification, NotificationType
-from pricewatch.libs.sendgrid import SendGrid
-from pricewatch.libs.twilio import Twilio
+from src.models.item import Item
+from src.models.model import Model
+from src.models.user import User
+from src.models.notification import Notification, NotificationType
+from src.libs.sendgrid import SendGrid
+from src.libs.twilio import Twilio
+
 
 @dataclass(eq=False)
 class Alert(Model):
