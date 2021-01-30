@@ -6,7 +6,7 @@ COPY . /app
 WORKDIR /app
 RUN apk add --update --no-cache g++ gcc libxml2-dev libxslt-dev python3-dev libffi-dev openssl-dev make
 RUN pip install pipenv && \
-    pipenv install --skip-lock
+    pipenv install --system --deploy --skip-lock
 
 # ENV APP_SECRET
 # ENV MONGODB_URI
