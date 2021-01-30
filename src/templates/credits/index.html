@@ -3,11 +3,11 @@
 {% block content %}
 <section>
     <div class="bg-gray-100 shadow-sm rounded-md p-8">
-        <h2 class="ext-md lg:text-2xl text-gray-600 mb-3">
-        Credits: {{ user.credits_consumed }}/{{ user.credits_available }}
-        </h2>
         <div class="flex items-center text-xl">
-            <button class="py-3 px-12 bg-blue-500 hover:bg-blue-600 mr-5 rounded-md text-white text-lg focus:outline-none w-full" id="submitBtn">
+            <h2 class="flex-grow ext-md lg:text-2xl text-gray-600 mb-3">
+                Credits: {{ user.credits_consumed }}/{{ user.credits_available }}
+            </h2>
+            <button class="py-3 px-12 bg-blue-500 hover:bg-blue-600 mr-5 rounded-md text-white text-lg focus:outline-none" id="submitBtn">
             Purchase!
             </button>
         </div>
