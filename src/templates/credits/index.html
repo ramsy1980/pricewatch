@@ -19,7 +19,7 @@
         {% if payments|length > 0 %}
             {% for payment in payments %}
             <div class="flex items-center text-xl">
-                {{ payment.created }} - credits: +{{ payment.credits }}
+                {{ payment.created }} - amount: +{{ payment.amount }}
             </div>
             {% endfor %}
         {% else %}

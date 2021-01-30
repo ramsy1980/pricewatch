@@ -142,13 +142,13 @@ def stripe_webhook():
 
         payment_intent = stripe.PaymentIntent.retrieve(payment_intent_id)
         created = datetime.fromtimestamp(payment_intent.created)
-        credits_added = int(payment_intent.amount / 100)
+        amount = int(payment_intent.amount / 100)
 
-        payment = Payment(_id=payment_intent_id, credits=credits_added, created=created, user_id=user.id)
+        payment = Payment(_id=payment_intent_id, amount=amount, created=created, user_id=user.id)
         print("Payment added", payment)
         payment.save_to_db()
 
-        user.credits_available += credits_added
+        user.credits_available += amount
         user.save_to_db()
 
     return "Success", 200
