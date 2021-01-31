@@ -103,4 +103,5 @@ def user_profile():
 @user_blueprint.route('/logout')
 def logout_user():
     session['email'] = None
+    session['is_admin'] = None
     return redirect(url_for('.login_user'))
