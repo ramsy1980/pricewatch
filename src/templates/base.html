@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <script src="https://js.stripe.com/v3/"></script>
     <script src="{{ url_for('static', filename='main.js') }}"></script>
+    <style>
+        #menu-toggle:checked + #menu {
+          display: block;
+        }
+    </style>
 </head>
     <body class="antialiased sm:subpixel-antialiased md:antialiased bg-gray-200">
         {% include "header.html" %}

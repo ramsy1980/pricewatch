@@ -1,57 +1,66 @@
-<header>
-    <nav class="flex items-center justify-between p-6 container mx-auto">
-        <!-- Logo -->
+<header class="lg:px-16 px-6 bg-white flex flex-wrap items-center lg:py-0 py-2">
+    <div class="flex-1 flex justify-between items-center">
         <a href="/" class="flex flex-row items-center text-blue-600">
-            <svg width="32" height="32" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+            <svg width="32" height="32" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
             </svg>
-            <div class="ml-1 text-blue-900 font-mono text-3xl">
+            <div class="ml-1 text-blue-900 font-mono text-1xl">
                 PriceWatch
             </div>
         </a>
-
-        <!-- Menu items -->
-        {% if session['email'] %}
-        <div class="text-lg text-gray-600 hidden lg:flex">
-            <a href="/" class="block mt-4 lg:inline-block {{ 'text-blue-600' if active == 'home' else 'text-gray-600 hover:text-gray-700' }} lg:mt-0 mr-10" id="home">
-                Home
-            </a>
-            {% if session['is_admin'] %}
-            <a href="{{ url_for('stores.index') }}" class="block mt-4 lg:inline-block {{ 'text-blue-600' if active == 'stores' else 'text-gray-600 hover:text-gray-700' }} lg:mt-0 mr-10" id="stores">
-                Stores
-            </a>
-            {% endif %}
-            <a href="{{ url_for('alerts.index') }}" class="block mt-4 lg:inline-block {{ 'text-blue-600' if active == 'alerts' else 'text-gray-600 hover:text-gray-700' }} lg:mt-0 mr-10" id="alerts">
-                Alerts
-            </a>
-            <a href="{{ url_for('credits.index') }}" class="block mt-4 lg:inline-block {{ 'text-blue-600' if active == 'credits' else 'text-gray-600 hover:text-gray-700' }} lg:mt-0 mr-10" id="credits">
-                Credits
-            </a>
-        </div>
-        {% endif %}
-
-        <!-- CTA and Hamburger icon -->
-        <div class="flex items-center">
-            <div class="mr-5 lg:mr-0">
-                {% if not session['email'] %}
-                    <a href="{{ url_for('users.login_user') }}" class="py-2 px-6 rounded-md text-gray-600 hover:text-gray-700 text-lg">Sign in</a>
-                    <a href="{{ url_for('users.register_user') }}" class="py-2 px-6 bg-blue-500 hover:bg-blue-600 rounded-md text-white text-lg">Sign up</a>
-                {% else %}
-                    <a href="{{ url_for('users.user_profile') }}" class="py-2 px-6 rounded-md {{ 'text-blue-600' if active == 'profile' else 'text-gray-600 hover:text-gray-700' }} text-lg">Profile</a>
-                    <a href="{{ url_for('users.logout_user') }}" class="py-2 px-6 rounded-md text-gray-600 hover:text-gray-700 text-lg">Sign out</a>
+    </div>
+    <label for="menu-toggle" class="cursor-pointer lg:hidden block">
+        <svg class="fill-current h-3 w-3 text-gray-900" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <title>Menu</title>
+            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/>
+        </svg>
+    </label>
+    <input type="checkbox" class="hidden" id="menu-toggle"/>
+    <div class="hidden lg:flex lg:items-center lg:w-auto w-full" id="menu">
+        <nav>
+            <ul class="lg:flex items-center justify-between text-base text-gray-700 pt-4 lg:pt-0">
+                {% if session['is_admin'] %}
+                <li>
+                    <a href="{{ url_for('stores.index') }}" class="lg:p-4 py-3 px-0 block border-b-2 border-transparent {{ 'border-blue-400' if active == 'stores' else 'hover:border-blue-400' }}">
+                        Stores
+                    </a>
+                </li>
                 {% endif %}
-            </div>
-            <div class="block lg:hidden">
-                <button
-                    class="flex items-center px-4 py-3 border rounded text-blue-500 border-blue-500 focus:outline-none">
-                    <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <title>Menu</title>
-                        <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-                    </svg>
-                </button>
-            </div>
+                <li>
+                    <a href="{{ url_for('alerts.index') }}" class="lg:p-4 py-3 px-0 block border-b-2 border-transparent {{ 'border-blue-400' if active == 'alerts' else 'hover:border-blue-400' }}">
+                        Alerts
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('credits.index') }}" class="lg:p-4 py-3 px-0 block border-b-2 border-transparent {{ 'border-blue-400' if active == 'credits' else 'hover:border-blue-400' }}">
+                        Credits
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:border-blue-400">
+                        Support
+                    </a>
+                </li>
+        {% if session['email'] %}
+            <a href="{{ url_for('users.user_profile') }}" class="lg:ml-4 flex items-center justify-start lg:mb-0 mb-4 cursor-pointer">
+                <img src="https://pbs.twimg.com/profile_images/1284051433474719745/vdNG8fnx_400x400.jpg"
+                     class="rounded-full w-10 h-10 border-2 border-transparent {{ 'border-blue-400' if active == 'profile' else 'hover:border-blue-400' }}"
+                     alt="Ramsy de Vos"
+                />
+            </a>
+        {% else %}
+            <li>
+                <a href="{{ url_for('users.login_user') }}" class="lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:border-blue-400">Sign in</a>
+            </li>
+            <li>
+                <a href="{{ url_for('users.register_user') }}" class="py-2 px-6 block bg-blue-500 hover:bg-blue-600 rounded-md text-white">Sign up</a>
+            </li>
+        {% endif %}
+            </ul>
+        </nav>
 
-        </div>
-    </nav>
+    </div>
 </header>
 
