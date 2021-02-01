@@ -1,6 +1,7 @@
 from uuid import uuid4
 from dataclasses import dataclass, field
 from typing import Dict
+from datetime import datetime, timedelta
 from src.models.item import Item
 from src.models.model import Model
 from src.models.user import User
@@ -17,6 +18,9 @@ class Alert(Model):
     item_id: str
     price_limit: float
     user_email: str
+    last_email_sent_at: datetime
+    last_sms_sent_at: datetime
+
     _id: str = field(default_factory=lambda: uuid4().hex)
 
     def __post_init__(self):
@@ -29,12 +33,56 @@ class Alert(Model):
             "name": self.name,
             "price_limit": self.price_limit,
             "item_id": self.item_id,
-            "user_email": self.user_email
+            "user_email": self.user_email,
+            "last_email_sent_at": self.last_email_sent_at,
+            "last_sms_sent_at": self.last_sms_sent_at
         }
 
     def load_item_price(self) -> float:
         self.item.load_price()
         return self.item.price
+
+    def send_email(self, text_content: str, html_content: str):
+        if self.last_email_sent_at is not None:
+            if not datetime.utcnow() > self.last_email_sent_at + timedelta(days=1):
+                print(f"Not sending email. Last email sent at {self.last_sms_sent_at}")
+                return
+
+            date, message_id = SendGrid.send_email(
+                to_emails=[self.user_email],
+                subject=f"Notification for {self.name}",
+                html_content=html_content,
+                text_content=text_content
+            )
+            Notification(
+                _id=message_id,
+                user_id=self.user.id,
+                alert_id=self._id,
+                notification_type=NotificationType.EMAIL,
+                created=date
+            ).save_to_db()
+            self.last_email_sent_at = datetime.utcnow()
+            self.save_to_db()
+
+    def sens_sms(self, text_content: str):
+        if not self.user.has_credits():
+            print("Insufficient credits. Unable to send SMS.")
+            return
+        if self.last_sms_sent_at is not None:
+            if not datetime.utcnow() > self.last_sms_sent_at + timedelta(days=1):
+                print(f"Not sending sms. Last email sent at {self.last_sms_sent_at}")
+                return
+
+            date, message_id = Twilio.send_sms(self.user.phone_number, text_content)
+            Notification(
+                _id=message_id,
+                user_id=self.user.id,
+                alert_id=self._id,
+                notification_type=NotificationType.SMS,
+                created=date
+            ).save_to_db()
+            self.last_sms_sent_at = datetime.utcnow()
+            self.user.consume_one_credit()
 
     def notify_if_price_reached(self):
         if self.item.price < self.price_limit:
@@ -50,19 +98,7 @@ class Alert(Model):
 
             if self.user.is_email_verified():
                 try:
-                    date, message_id = SendGrid.send_email(
-                        to_emails=[self.user_email],
-                        subject=f"Notification for {self.name}",
-                        html_content=html_content,
-                        text_content=text_content
-                    )
-                    Notification(
-                        _id=message_id,
-                        user_id=self.user.id,
-                        alert_id=self._id,
-                        notification_type=NotificationType.EMAIL,
-                        created=date
-                    ).save_to_db()
+                    self.send_email(text_content, html_content)
                 except Exception as e:
                     excepName = type(e).__name__
                     print(excepName, "Failed to send email")
@@ -71,20 +107,8 @@ class Alert(Model):
                 print("Unable to send email. Email is not verified.")
 
             if self.user.is_phone_number_verified():
-                if not self.user.has_credits():
-                    print("Insufficient credits. Unable to send SMS.")
-                    return
-
                 try:
-                    date, message_id = Twilio.send_sms(self.user.phone_number, text_content)
-                    Notification(
-                        _id=message_id,
-                        user_id=self.user.id,
-                        alert_id=self._id,
-                        notification_type=NotificationType.SMS,
-                        created=date
-                    ).save_to_db()
-                    self.user.consume_one_credit()
+                    self.sens_sms(text_content)
                 except Exception as e:
                     excepName = type(e).__name__
                     print(excepName, "Failed to send SMS")
