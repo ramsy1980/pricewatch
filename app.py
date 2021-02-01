@@ -1,10 +1,12 @@
 import os
 import stripe
+import schedule
 from datetime import datetime
 from flask import Flask, render_template, jsonify, session, request, redirect, url_for
 from src.models import Payment, User, requires_login, errors
 from src.views import alert_blueprint, store_blueprint, user_blueprint, email_blueprint, phone_number_blueprint, credit_blueprint, payment_blueprint
 from src.common import DisplayFlashMessages
+from src.models.alert import Alert
 
 APP_DOMAIN_URL = os.environ.get('APP_DOMAIN_URL')
 APP_SECRET = os.environ.get('APP_SECRET')
@@ -154,5 +156,17 @@ def stripe_webhook():
     return "Success", 200
 
 
+def send_alerts():
+    alerts = Alert.all()
+
+    for alert in alerts:
+        alert.load_item_price()
+        alert.notify_if_price_reached()
+
+    if not alerts:
+        print("No alerts have been created. Create an alert to get started.")
+
+
 if __name__ == '__main__':
+    schedule.every(1).minute.do(send_alerts)
     app.run(host='0.0.0.0', debug=True)
