@@ -43,46 +43,45 @@ class Alert(Model):
         return self.item.price
 
     def send_email(self, text_content: str, html_content: str):
-        if self.last_email_sent_at is not None:
-            if not datetime.utcnow() > self.last_email_sent_at + timedelta(days=1):
-                print(f"Not sending email. Last email sent at {self.last_sms_sent_at}")
-                return
+        if self.last_email_sent_at and not (datetime.utcnow() > self.last_email_sent_at + timedelta(days=1)):
+            print(f"Not sending email. Last email sent at {self.last_sms_sent_at}")
+            return
 
-            date, message_id = SendGrid.send_email(
-                to_emails=[self.user_email],
-                subject=f"Notification for {self.name}",
-                html_content=html_content,
-                text_content=text_content
-            )
-            Notification(
-                _id=message_id,
-                user_id=self.user.id,
-                alert_id=self._id,
-                notification_type=NotificationType.EMAIL,
-                created=date
-            ).save_to_db()
-            self.last_email_sent_at = datetime.utcnow()
-            self.save_to_db()
+        date, message_id = SendGrid.send_email(
+            to_emails=[self.user_email],
+            subject=f"Notification for {self.name}",
+            html_content=html_content,
+            text_content=text_content
+        )
+        Notification(
+            _id=message_id,
+            user_id=self.user.id,
+            alert_id=self._id,
+            notification_type=NotificationType.EMAIL,
+            created=date
+        ).save_to_db()
+        self.last_email_sent_at = datetime.utcnow()
+        self.save_to_db()
 
     def sens_sms(self, text_content: str):
         if not self.user.has_credits():
             print("Insufficient credits. Unable to send SMS.")
             return
-        if self.last_sms_sent_at is not None:
-            if not datetime.utcnow() > self.last_sms_sent_at + timedelta(days=1):
-                print(f"Not sending sms. Last email sent at {self.last_sms_sent_at}")
-                return
+        if self.last_sms_sent_at and not (datetime.utcnow() > self.last_sms_sent_at + timedelta(days=1)):
+            print(f"Not sending sms. Last sms sent at {self.last_sms_sent_at}")
+            return
 
-            date, message_id = Twilio.send_sms(self.user.phone_number, text_content)
-            Notification(
-                _id=message_id,
-                user_id=self.user.id,
-                alert_id=self._id,
-                notification_type=NotificationType.SMS,
-                created=date
-            ).save_to_db()
-            self.last_sms_sent_at = datetime.utcnow()
-            self.user.consume_one_credit()
+        date, message_id = Twilio.send_sms(self.user.phone_number, text_content)
+        Notification(
+            _id=message_id,
+            user_id=self.user.id,
+            alert_id=self._id,
+            notification_type=NotificationType.SMS,
+            created=date
+        ).save_to_db()
+        self.user.consume_one_credit()
+        self.last_sms_sent_at = datetime.utcnow()
+        self.save_to_db()
 
     def notify_if_price_reached(self):
         if self.item.price < self.price_limit:
@@ -101,7 +100,7 @@ class Alert(Model):
                     self.send_email(text_content, html_content)
                 except Exception as e:
                     excepName = type(e).__name__
-                    print(excepName, "Failed to send email")
+                    print(excepName, "Failed to send email", e)
 
             else:
                 print("Unable to send email. Email is not verified.")
@@ -111,6 +110,6 @@ class Alert(Model):
                     self.sens_sms(text_content)
                 except Exception as e:
                     excepName = type(e).__name__
-                    print(excepName, "Failed to send SMS")
+                    print(excepName, "Failed to send SMS", e)
             else:
                 print("Unable to send SMS. Phone number is not verified.")
