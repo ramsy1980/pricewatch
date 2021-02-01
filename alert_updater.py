@@ -1,5 +1,7 @@
 from src.models import Alert
 
+# Setup cronjob
+# See https://towardsdatascience.com/scheduling-all-kinds-of-recurring-jobs-with-python-b8784c74d5dc
 
 alerts = Alert.all()
 
