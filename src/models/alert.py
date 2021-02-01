@@ -18,8 +18,8 @@ class Alert(Model):
     item_id: str
     price_limit: float
     user_email: str
-    last_email_sent_at: datetime
-    last_sms_sent_at: datetime
+    last_email_sent_at: datetime = None
+    last_sms_sent_at: datetime = None
 
     _id: str = field(default_factory=lambda: uuid4().hex)
 
