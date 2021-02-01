@@ -23,6 +23,7 @@ twilio = "*"
 stripe = "*"
 phonenumbers = "*"
 python-dateutil = "*"
+schedule = "*"
 
 [dev-packages]
 pylint = "*"
