@@ -8,4 +8,4 @@ WORKDIR /app
 RUN pipenv lock -r > requirements.txt \
     && pip3 install -r requirements.txt
 
-CMD ["gunicorn", "-w 4", "-b", "0.0.0.0:8000", "wsgi:app"]
+CMD ["gunicorn", "-w 4", "-b", "0.0.0.0:8000", "--error-logfile", "/var/log/gunicorn/error.log", "--access-logfile", "/var/log/gunicorn/access.log", "--capture-output", "--log-level", "debug", "wsgi:app"]
