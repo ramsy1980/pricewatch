@@ -2,7 +2,6 @@
 {% block content %}
 <div class="w-full lg:flex items-center">
     <div class="w-full lg:w-1/2">
-        <!-- hero section description goes here -->
         <h1 class="text-5xl lg:text-6xl font-bold text-blue-600 mb-2 lg:mb-6">Watching your products</h1>
         <p class="text-md lg:text-xl font-light text-gray-800 mb-8">
             We scan online websites to alert you of price drops in items that interest you.
@@ -76,14 +75,7 @@
                 </button>
             </form>
         {% else %}
-            <div class="bg-gray-100 shadow-sm rounded-md p-8">
-                <h2 class="text-md lg:text-2xl text-gray-600 mb-3">SMS Alert Service</h2>
-
-                <div class="mb-6">
-                    <h3>Remaining: {{ user.credits_available }}</h3>
-                    <h3>Consumed: {{ user.credits_consumed }}</h3>
-                </div>
-            </div>
+            {% include "credits/_home.html" %}
         {% endif %}
     </div>
 </div>
