@@ -20,7 +20,7 @@ def verify_phone_number():
 
         if user.verify_phone_number_verification(phone_number, verification_code):
             flash("You have successfully verified your phone number", "green")
-            if user.credits_available == 0:
+            if user.total_credits == 0:
                 return redirect(url_for('credits.index'))
             else:
                 return redirect(url_for('alerts.index'))

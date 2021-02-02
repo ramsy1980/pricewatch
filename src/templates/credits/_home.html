@@ -2,7 +2,8 @@
     <h2 class="text-md lg:text-2xl text-gray-600 mb-3">SMS Alert Service</h2>
 
     <div class="mb-6">
-        <h3>Remaining: {{ user.credits_available }}</h3>
+        <h3>Total: {{ user.total_credits }}</h3>
+        <h3>Remaining: {{ user.credits_available() }}</h3>
         <h3>Consumed: {{ user.credits_consumed }}</h3>
     </div>
 </div>

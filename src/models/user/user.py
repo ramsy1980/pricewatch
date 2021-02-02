@@ -27,15 +27,18 @@ class User(Model):
     phone_number_verification_token: Union[str, None] = None
     phone_number_verification_token_expires_at: Union[datetime, None] = None
 
-    credits_available: int = 0
+    total_credits: int = 0
     credits_consumed: int = 0
 
     _id: str = field(default_factory=lambda: uuid4().hex)
     created_at: datetime = field(init=False, default=datetime.utcnow())
     collection: str = field(init=False, default='users')
 
+    def credits_available(self) -> float:
+        return self.total_credits - self.credits_consumed
+
     def has_credits(self) -> bool:
-        return self.credits_available - self.credits_consumed > 0
+        return self.credits_available > 0
 
     def json(self) -> Dict:
         return {
@@ -52,7 +55,7 @@ class User(Model):
             "phone_number_verified_at": self.phone_number_verified_at,
             "phone_number_verification_token": self.phone_number_verification_token,
             "phone_number_verification_token_expires_at": self.phone_number_verification_token_expires_at,
-            "credits_available": self.credits_available,
+            "total_credits": self.total_credits,
             "credits_consumed": self.credits_consumed
         }
 
@@ -138,7 +141,7 @@ class User(Model):
         self.consume_credits(1)
 
     def has_credits(self) -> bool:
-        return (self.credits_available - self.credits_consumed) > 0
+        return (self.total_credits - self.credits_consumed) > 0
 
     @classmethod
     def find_by_email_verification_token(cls, email_verification_token: str) -> "User":

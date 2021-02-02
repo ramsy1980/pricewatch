@@ -153,7 +153,7 @@ def stripe_webhook():
         print("Payment added", payment)
         payment.save_to_db()
 
-        user.credits_available += amount
+        user.total_credits += amount
         user.save_to_db()
 
     return "Success", 200
