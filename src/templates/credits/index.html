@@ -3,7 +3,7 @@
 {% block content %}
 <section>
     <div class="bg-gray-100 shadow-sm rounded-md p-8">
-        <div class="flex items-center text-xl">
+        <div class="bg-white flex items-center text-xl p-6 rounded-md">
             <h2 class="flex-grow ext-md lg:text-2xl text-gray-600 mb-3">
                 Credits: {{ user.credits_consumed }}/{{ user.credits_available }}
             </h2>
@@ -17,11 +17,23 @@
         Payments
         </h2>
         {% if payments|length > 0 %}
-            {% for payment in payments %}
-            <div class="flex items-center text-xl">
-                {{ payment.created }} - amount: +{{ payment.amount }}
-            </div>
-            {% endfor %}
+            <table class="table-auto text-sm">
+                <thead>
+                    <th class="text-left">Date</th>
+                    <th class="text-left">ID</th>
+                    <th class="text-right">Amount</th>
+                </thead>
+                <tbody>
+                {% for payment in payments %}
+                <tr>
+                <td class="pr-5"><time datetime="{{ payment.created }}">{{ payment.created }}</time></td>
+                    <td class="pr-5">{{ payment._id }}</td>
+                    <td>+{{ payment.amount }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
         {% else %}
             <div class="mb-10 flex items-center text-xl">
                 No payments have been found yet. Purchase some to get started.
@@ -33,11 +45,22 @@
         Notifications
         </h2>
         {% if notifications|length > 0 %}
+        <table class="table-auto text-sm">
+            <thead>
+                <th class="text-left">Date</th>
+                <th class="text-left">Type</th>
+                <th class="text-left">Name</th>
+            </thead>
+            <tbody>
             {% for notification in notifications %}
-            <div class="flex items-center text-xl">
-                {{ notification.created }}: {{ notification.notification_type }} - {{ notification.alert.name }}
-            </div>
+            <tr>
+                <td class="pr-5"><time datetime="{{ notification.created }}">{{ notification.created }}</time></td>
+                <td class="pr-5">{{ notification.notification_type }}</td>
+                <td>{{ notification.alert.name }}</td>
+            </tr>
             {% endfor %}
+            </tbody>
+        </table>
         {% else %}
             <div class="mb-10 flex items-center text-xl">
                 No notifications have been found yet.
