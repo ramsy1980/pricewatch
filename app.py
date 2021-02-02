@@ -4,7 +4,8 @@ import schedule
 from datetime import datetime
 from flask import Flask, render_template, jsonify, session, request, redirect, url_for
 from src.models import Payment, User, requires_login, errors
-from src.views import alert_blueprint, store_blueprint, user_blueprint, email_blueprint, phone_number_blueprint, credit_blueprint, payment_blueprint
+from src.views import alert_blueprint, store_blueprint, user_blueprint, email_blueprint, phone_number_blueprint, \
+    credit_blueprint, payment_blueprint, link_blueprint
 from src.common import DisplayFlashMessages
 from src.models.alert import Alert
 
@@ -32,10 +33,11 @@ stripe.api_key = STRIPE_SECRET_KEY
 
 app = Flask(__name__)
 app.secret_key = APP_SECRET
-app.template_folder="src/templates"
+app.template_folder = "src/templates"
 
 app.config.update(
     ADMIN_EMAIL=ADMIN_EMAIL,
+    APP_DOMAIN_URL=APP_DOMAIN_URL
 )
 
 
@@ -65,6 +67,7 @@ app.register_blueprint(email_blueprint, url_prefix="/emails")
 app.register_blueprint(phone_number_blueprint, url_prefix="/phone-numbers")
 app.register_blueprint(credit_blueprint, url_prefix="/credits")
 app.register_blueprint(payment_blueprint, url_prefix="/payments")
+app.register_blueprint(link_blueprint, url_prefix="/links")
 
 
 @app.route("/config", methods=["POST"])

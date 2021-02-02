@@ -1,3 +1,4 @@
+from flask import current_app
 from uuid import uuid4
 from dataclasses import dataclass, field
 from typing import Dict
@@ -87,13 +88,15 @@ class Alert(Model):
         if self.item.price < self.price_limit:
             print(f"Item {self.item} has reached price under {self.price_limit}. Latest price: {self.item.price}")
 
+            link = f"{current_app.config.get('APP_DOMAIN_URL')}/links/{self.item._id}"
+
             html_content = f"<p>Your alert {self.name} has reached a price under {self.item.store.currency_symbol} {self.price_limit}.</p> \
                                    <p>The latest price is {self.item.store.currency_symbol} {self.item.price}.</p> \
-                                   <p>Go to this address to check your item: <a href='{self.item.url}'>{self.item.url}</a>.\
+                                   <p>Go to this address to check your item: <a href='{link}'>{self.name}</a>.\
                                    </p>"
             text_content = f"Your alert {self.name} has reached a price under {self.item.store.currency_symbol} {self.price_limit}. \
                                    The latest price is {self.item.store.currency_symbol} {self.item.price}. \
-                                   Go to this address to check your item: {self.item.url}."
+                                   Go to this address to check your item: {link}."
 
             if self.user.is_email_verified():
                 try:
