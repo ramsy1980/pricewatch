@@ -1,4 +1,4 @@
-from flask import current_app
+import os
 from uuid import uuid4
 from dataclasses import dataclass, field
 from typing import Dict
@@ -88,7 +88,7 @@ class Alert(Model):
         if self.item.price < self.price_limit:
             print(f"Item {self.item} has reached price under {self.price_limit}. Latest price: {self.item.price}")
 
-            link = f"{current_app.config.get('APP_DOMAIN_URL')}/links/{self.item._id}"
+            link = f"{os.environ.get('APP_DOMAIN_URL')}/links/{self.item._id}"
 
             html_content = f"<p>Your alert {self.name} has reached a price under {self.item.store.currency_symbol} {self.price_limit}.</p> \
                                    <p>The latest price is {self.item.store.currency_symbol} {self.item.price}.</p> \
