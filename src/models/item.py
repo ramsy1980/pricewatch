@@ -4,7 +4,7 @@ from typing import Dict
 from src.models.model import Model
 from src.models.store import Store
 from src.libs.request import Request, ItemOutOfStockError
-
+from src.common import logger
 
 @dataclass(eq=False)
 class Item(Model):
@@ -30,7 +30,7 @@ class Item(Model):
                 self.store.css_selector_out_of_stock
             )
         except ItemOutOfStockError as e:
-            print(e)
+            logger.error(e)
             self.out_of_stock = True
 
         return self.price

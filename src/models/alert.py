@@ -9,7 +9,7 @@ from src.models.user import User
 from src.models.notification import Notification, NotificationType
 from src.libs.sendgrid import SendGrid
 from src.libs.twilio import Twilio
-
+from src.common import logger
 
 @dataclass(eq=False)
 class Alert(Model):
@@ -45,7 +45,7 @@ class Alert(Model):
 
     def send_email(self, text_content: str, html_content: str):
         if self.last_email_sent_at and not (datetime.utcnow() > self.last_email_sent_at + timedelta(days=1)):
-            print(f"Not sending email. Last email sent at {self.last_sms_sent_at}")
+            logger.info(f"Not sending email. Last email sent at {self.last_sms_sent_at}")
             return
 
         date, message_id = SendGrid.send_email(
@@ -66,10 +66,10 @@ class Alert(Model):
 
     def sens_sms(self, text_content: str):
         if not self.user.has_credits():
-            print("Insufficient credits. Unable to send SMS.")
+            logger.warning("Insufficient credits. Unable to send SMS.")
             return
         if self.last_sms_sent_at and not (datetime.utcnow() > self.last_sms_sent_at + timedelta(days=1)):
-            print(f"Not sending sms. Last sms sent at {self.last_sms_sent_at}")
+            logger.info(f"Not sending sms. Last sms sent at {self.last_sms_sent_at}")
             return
 
         date, message_id = Twilio.send_sms(self.user.phone_number, text_content)
@@ -86,7 +86,7 @@ class Alert(Model):
 
     def notify_if_price_reached(self):
         if self.item.price < self.price_limit:
-            print(f"Item {self.item} has reached price under {self.price_limit}. Latest price: {self.item.price}")
+            logger.info(f"Item {self.item} has reached price under {self.price_limit}. Latest price: {self.item.price}")
 
             link = f"{os.environ.get('APP_DOMAIN_URL')}/links/{self.item._id}"
 
@@ -103,16 +103,16 @@ class Alert(Model):
                     self.send_email(text_content, html_content)
                 except Exception as e:
                     excepName = type(e).__name__
-                    print(excepName, "Failed to send email", e)
+                    logger.error(excepName, "Failed to send email", e)
 
             else:
-                print("Unable to send email. Email is not verified.")
+                logger.info("Unable to send email. Email is not verified.")
 
             if self.user.is_phone_number_verified():
                 try:
                     self.sens_sms(text_content)
                 except Exception as e:
                     excepName = type(e).__name__
-                    print(excepName, "Failed to send SMS", e)
+                    logger.error(excepName, "Failed to send SMS", e)
             else:
-                print("Unable to send SMS. Phone number is not verified.")
+                logger.infp("Unable to send SMS. Phone number is not verified.")

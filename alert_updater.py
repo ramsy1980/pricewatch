@@ -1,4 +1,5 @@
 from src.models import Alert
+from src.common import logger
 
 # Setup cronjob
 # See https://towardsdatascience.com/scheduling-all-kinds-of-recurring-jobs-with-python-b8784c74d5dc
@@ -10,6 +11,6 @@ for alert in alerts:
     alert.notify_if_price_reached()
 
 if not alerts:
-    print("No alerts have been created. Create an alert to get started.")
+    logger.info("No alerts have been created. Create an alert to get started.")
 
 

@@ -2,7 +2,7 @@ import os
 import phonenumbers
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
 from src.models.user import User, errors, requires_login
-from src.common import Utils, DisplayFlashMessages
+from src.common import Utils, DisplayFlashMessages, logger
 
 user_blueprint = Blueprint('users', __name__)
 
@@ -78,11 +78,11 @@ def user_profile():
                 has_changes = True
 
             if has_changes:
-                print("Saving User changes ...")
+                logger.info("Saving User changes ...")
                 user.save_to_db()
 
             if f"{country_code}{national_number}" != user.phone_number:
-                print(country_code, national_number, f"{country_code}{national_number}", user.phone_number, national_number != "" or f"{country_code}{national_number}" != user.phone_number)
+                logger(country_code, national_number, f"{country_code}{national_number}", user.phone_number, national_number != "" or f"{country_code}{national_number}" != user.phone_number)
                 session['country_code'] = country_code
                 session['national_number'] = national_number
 

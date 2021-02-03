@@ -40,7 +40,6 @@ def new_store():
 @requires_admin
 def edit_store(store_id):
     store = Store.get_by_id(store_id)
-    print(store)
 
     if request.method == "POST":
         store.name = request.form['name']

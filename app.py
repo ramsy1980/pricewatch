@@ -6,7 +6,7 @@ from flask import Flask, render_template, jsonify, session, request, redirect, u
 from src.models import Payment, User, requires_login, errors
 from src.views import alert_blueprint, store_blueprint, user_blueprint, email_blueprint, phone_number_blueprint, \
     credit_blueprint, payment_blueprint, link_blueprint
-from src.common import DisplayFlashMessages
+from src.common import DisplayFlashMessages, logger
 from src.models.alert import Alert
 
 APP_DOMAIN_URL = os.environ.get('APP_DOMAIN_URL')
@@ -139,7 +139,7 @@ def stripe_webhook():
 
     # Handle the checkout.session.completed event
     if event["type"] == "checkout.session.completed":
-        print("Payment was successful.")
+        logger.info("Payment was successful.")
         user_id = event.data['object']['client_reference_id']
         payment_intent_id = event.data['object']['payment_intent']
 
@@ -150,7 +150,7 @@ def stripe_webhook():
         amount = int(payment_intent.amount / 100)
 
         payment = Payment(_id=payment_intent_id, amount=amount, created=created, user_id=user.id)
-        print("Payment added", payment)
+        logger.info("Payment added", payment)
         payment.save_to_db()
 
         user.total_credits += amount
@@ -167,7 +167,7 @@ def send_alerts():
         alert.notify_if_price_reached()
 
     if not alerts:
-        print("No alerts have been created. Create an alert to get started.")
+        logger.info("No alerts have been created. Create an alert to get started.")
 
 
 if __name__ == '__main__':

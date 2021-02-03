@@ -3,6 +3,7 @@ from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 from typing import List
 from dateutil.parser import parse
+from src.common import logger
 
 
 class SendGridException(Exception):
@@ -33,14 +34,12 @@ class SendGrid:
         response = sg.send(message)
 
         if response.status_code != 202:
-            print(response.status_code)
-            print(response.body)
-            print(response.headers)
+            logger.error("An error occurred while sending e-mail.", response.status_code, response.body, response.headers)
             raise SendGridException("An error occurred while sending e-mail.")
 
         message_id = response.headers.get('X-Message-Id')
         date = parse(response.headers.get('Date'))
 
-        print(date, "Email sent:", message_id)
+        logger.info(date, "Email sent:", message_id)
 
         return date, message_id

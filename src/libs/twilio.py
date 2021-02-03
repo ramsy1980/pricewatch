@@ -1,7 +1,7 @@
 import os
 from twilio.rest import Client
 from dateutil.parser import parse
-
+from src.common import logger
 
 class TwilioException(Exception):
     def __init__(self, message: str):
@@ -33,9 +33,9 @@ class Twilio:
 
             message_id = message.sid
             date = message.date_created
-            print(date, "SMS sent:", message_id)
+            logger.info(date, "SMS sent:", message_id)
 
             return date, message_id
         except TwilioException as e:
-            print("Error sending SMS message:", e.message)
+            logger.error("Error sending SMS message:", e.message)
             return e.message
